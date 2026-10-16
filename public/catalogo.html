@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Catálogo — GRIFES Zequinha (loja de teste)</title>
+    <meta
+      name="description"
+      content="Catálogo fictício da GRIFES Zequinha para testar o checkout transparente do Mercado Pago: filtros, ordenação e frete simulado."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
+  <body data-pagina="catalogo">
+    <div data-faixa-teste></div>
+
+    <header class="cabecalho">
+      <div class="container cabecalho__interno">
+        <a class="marca" href="/" aria-label="GRIFES Zequinha — página inicial">
+          <img class="marca__logo" src="/img/logo-grifes-zequinha.svg" alt="GRIFES Zequinha" width="248" height="66" />
+        </a>
+        <nav class="nav" aria-label="Navegação principal">
+          <a class="nav__link" data-nav href="/catalogo.html">Catálogo</a>
+          <a class="nav__link nav__link--oculto-mobile" data-nav href="/diagnostico.html">Diagnóstico do pagamento</a>
+          <a class="carrinho-botao" href="/carrinho.html">
+            Carrinho
+            <span class="carrinho-botao__contador escondido-visualmente" data-contador-carrinho>0</span>
+            <span class="escondido-visualmente" data-rotulo-carrinho>Carrinho vazio</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <nav class="migalhas" aria-label="Você está em">
+        <a href="/">Início</a> / <span>Catálogo</span>
+      </nav>
+
+      <section class="secao" style="padding-top: 1.5rem">
+        <div class="secao__cabecalho">
+          <div>
+            <span class="eyebrow">Coleção completa</span>
+            <h1 class="secao__titulo">Catálogo de demonstração</h1>
+            <p class="secao__descricao">
+              <strong id="contador-resultados">—</strong> · Produtos, preços e imagens fictícios.
+              Clique em uma peça para escolher tamanho e adicionar ao carrinho.
+            </p>
+          </div>
+        </div>
+
+        <div id="aviso-catalogo"></div>
+
+        <div class="painel" style="display: grid; gap: 1rem; margin-bottom: 2rem">
+          <div class="grade-campos">
+            <div class="campo">
+              <label for="busca-produto">Buscar peça</label>
+              <input id="busca-produto" type="search" placeholder="Ex.: linho, alfaiataria, seda" autocomplete="off" />
+              <span class="dica">A busca considera nome, categoria e descrição.</span>
+            </div>
+            <div class="campo">
+              <label for="ordenacao">Ordenar por</label>
+              <select id="ordenacao">
+                <option value="destaques">Destaques</option>
+                <option value="menor-preco">Menor preço</option>
+                <option value="maior-preco">Maior preço</option>
+                <option value="nome">Nome (A–Z)</option>
+              </select>
+            </div>
+          </div>
+          <div class="campo">
+            <span class="opcoes-grupo__rotulo">Categoria</span>
+            <div class="opcoes" id="filtros-categoria" role="radiogroup" aria-label="Filtrar por categoria"></div>
+          </div>
+        </div>
+
+        <div class="grade-produtos" id="grade-produtos" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="container rodape__grade">
+        <div>
+          <h4>GRIFES Zequinha</h4>
+          <p>
+            Loja de demonstração criada para testes de integração de pagamento.
+            Produtos, preços, estoque, frete e depoimentos são fictícios.
+          </p>
+          <p>Rua Augusta, 1500 — São Paulo/SP<br />atendimento@grifeszequinha.com.br</p>
+        </div>
+        <div>
+          <h4>Loja</h4>
+          <ul>
+            <li><a href="/catalogo.html">Catálogo completo</a></li>
+            <li><a href="/carrinho.html">Meu carrinho</a></li>
+            <li><a href="/checkout.html">Checkout</a></li>
+            <li><a href="/confirmacao.html">Status do pedido</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="/diagnostico.html">Diagnóstico das credenciais</a></li>
+            <li><a href="/diagnostico.html#cartoes">Cartões de teste</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/docs/checkout-bricks/landing" target="_blank" rel="noopener">Documentação do Brick</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/reference/online-payments/checkout-api/create-order/post" target="_blank" rel="noopener">Orders API</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pagamento</h4>
+          <div class="rodape__selo-teste">
+            <strong>Modo de teste (sandbox)</strong><br />
+            Checkout Transparente com Payment Brick + Orders API usando as credenciais de
+            <em>teste</em> do Mercado Pago. Nenhuma cobrança real é efetuada.
+          </div>
+        </div>
+      </div>
+      <div class="container rodape__base">
+        <span>© <span data-ano>2026</span> GRIFES Zequinha — loja de demonstração. Todos os dados são fictícios.</span>
+        <span>CNPJ 00.000.000/0000-00 (fictício) · Frete simulado · Página sem valor comercial</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/js/paginas/catalogo.js"></script>
+  </body>
+</html>

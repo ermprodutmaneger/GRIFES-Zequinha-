@@ -1,0 +1,38 @@
+# ---------------------------------------------------------------------------
+# Copie este arquivo para ".dev.vars" e cole as CREDENCIAIS DE TESTE.
+#   cp .dev.vars.example .dev.vars
+#
+# O arquivo .dev.vars esta no .gitignore e NUNCA deve ser commitado.
+# O ACCESS_TOKEN e lido apenas pelas Pages Functions (backend). Ele NUNCA
+# chega ao navegador: so a PUBLIC_KEY e devolvida para o site.
+#
+# Onde encontrar (painel do Mercado Pago):
+#   Seu negocio > Configuracoes > Gerenciar integracoes e aplicacoes >
+#   selecione a aplicacao > Credenciais de teste.
+#   - Public Key de teste comeca com "TEST-..."
+#   - Access Token de teste comeca com "TEST-..." (contas de teste antigas)
+#     ou "APP_USR-..." (aplicacoes novas)
+# ---------------------------------------------------------------------------
+
+# Chave publica de TESTE (vai para o navegador, usada pelo Payment Brick)
+MP_PUBLIC_KEY="TEST-cole-aqui-sua-public-key-de-teste"
+
+# Access Token de TESTE (SOMENTE servidor — nunca exponha no front-end)
+MP_ACCESS_TOKEN="TEST-cole-aqui-seu-access-token-de-teste"
+
+# Opcional: segredo do webhook (Assinatura secreta) para validar notificacoes
+MP_WEBHOOK_SECRET=""
+
+# auto | teste | producao
+MP_MODO="auto"
+
+# Opcional: e-mail do comprador de teste (aparece como dica no checkout).
+# Padrao dos usuarios de teste: test_user_<id>@testuser.com
+MP_EMAIL_COMPRADOR_TESTE=""
+
+# Opcional: identificacao da aplicacao (exibida em /diagnostico.html)
+MP_APP_ID=""
+MP_USER_ID=""
+
+# Preencha para testar o site SEM credenciais (pagamento 100% simulado):
+# MP_SIMULACAO="true"

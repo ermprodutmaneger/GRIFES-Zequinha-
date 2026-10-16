@@ -1,0 +1,16 @@
+# Credenciais locais do Cloudflare Pages / wrangler — NUNCA commitar
+.dev.vars
+.env
+.env.local
+.env.*.local
+
+# wrangler / build
+.wrangler/
+.wrangler.toml.bak
+node_modules/
+dist/
+
+# artefatos locais de trabalho
+produtos-brutos/
+.DS_Store
+*.log

@@ -1,0 +1,4 @@
+# Loja de DEMONSTRACAO para testes do Mercado Pago (modo de teste).
+# Nao deve ser indexada por buscadores.
+User-agent: *
+Disallow: /

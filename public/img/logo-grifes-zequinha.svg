@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248 66" width="248" height="66" role="img" aria-label="GRIFES Zequinha">
+  <title>GRIFES Zequinha</title>
+  <defs>
+    <linearGradient id="gz-ouro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E7CE86"/>
+      <stop offset="0.45" stop-color="#B98B2E"/>
+      <stop offset="1" stop-color="#8A6520"/>
+    </linearGradient>
+  </defs>
+  <!-- patch/monograma -->
+  <rect x="3" y="7" width="52" height="52" rx="15" fill="#15171B"/>
+  <rect x="5.6" y="9.6" width="46.8" height="46.8" rx="12.6" fill="none" stroke="url(#gz-ouro)" stroke-width="1.5"/>
+  <text x="29" y="43.5" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="25" font-weight="700" fill="url(#gz-ouro)" letter-spacing="0.5">GZ</text>
+  <!-- wordmark -->
+  <text x="70" y="31" font-family="Georgia, 'Times New Roman', serif" font-size="20.5" letter-spacing="3.6" fill="#15171B">GRIFES</text>
+  <text x="70" y="51.5" font-family="Georgia, 'Times New Roman', serif" font-size="16.5" font-style="italic" letter-spacing="1.1" fill="#9A7325">Zequinha</text>
+  <path d="M71 38.5 H236" stroke="url(#gz-ouro)" stroke-width="1" opacity="0.85"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="GRIFES Zequinha">
+  <title>GRIFES Zequinha</title>
+  <defs>
+    <linearGradient id="f-ouro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E7CE86"/>
+      <stop offset="0.5" stop-color="#B98B2E"/>
+      <stop offset="1" stop-color="#8A6520"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#15171B"/>
+  <rect x="3" y="3" width="58" height="58" rx="13" fill="none" stroke="url(#f-ouro)" stroke-width="1.8"/>
+  <text x="32" y="42" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="27" font-weight="700" fill="url(#f-ouro)" letter-spacing="0.5">GZ</text>
+</svg>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Diagnóstico das credenciais — GRIFES Zequinha</title>
+    <meta
+      name="description"
+      content="Checklist das credenciais de teste do Mercado Pago (PUBLIC_KEY e ACCESS_TOKEN), variáveis de ambiente e cartões de teste."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
+  <body data-pagina="diagnostico">
+    <div data-faixa-teste></div>
+
+    <header class="cabecalho">
+      <div class="container cabecalho__interno">
+        <a class="marca" href="/" aria-label="GRIFES Zequinha — página inicial">
+          <img class="marca__logo" src="/img/logo-grifes-zequinha.svg" alt="GRIFES Zequinha" width="248" height="66" />
+        </a>
+        <nav class="nav" aria-label="Navegação principal">
+          <a class="nav__link" data-nav href="/catalogo.html">Catálogo</a>
+          <a class="nav__link" data-nav href="/diagnostico.html">Diagnóstico</a>
+          <a class="carrinho-botao" href="/carrinho.html">
+            Carrinho
+            <span class="carrinho-botao__contador escondido-visualmente" data-contador-carrinho>0</span>
+            <span class="escondido-visualmente" data-rotulo-carrinho>Carrinho vazio</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <nav class="migalhas" aria-label="Você está em">
+        <a href="/">Início</a> / <span>Diagnóstico</span>
+      </nav>
+
+      <section class="secao" style="padding-top: 1.5rem">
+        <div class="secao__cabecalho">
+          <div>
+            <span class="eyebrow">Configuração obrigatória</span>
+            <h1 class="secao__titulo">Diagnóstico das credenciais do Mercado Pago</h1>
+            <p class="secao__descricao">
+              Esta página mostra exatamente o que falta para o checkout transparente funcionar.
+              Nenhum segredo é exibido: o access token aparece apenas mascarado, e somente no servidor.
+            </p>
+          </div>
+        </div>
+
+        <div id="resumo-diagnostico" aria-live="polite"></div>
+
+        <div class="painel" style="margin-top: 1.5rem">
+          <div class="painel__titulo">
+            <h2>Checklist</h2>
+            <span class="etiqueta-estado">GET /api/diagnostico</span>
+          </div>
+          <ul class="checklist" id="checklist"></ul>
+        </div>
+
+        <div class="painel" style="margin-top: 1.5rem">
+          <h2 style="font-size: 1.2rem">Próximos passos</h2>
+          <div id="proximos-passos"></div>
+        </div>
+
+        <div class="painel" style="margin-top: 1.5rem" id="cartoes">
+          <h2 style="font-size: 1.2rem">Passo a passo completo</h2>
+          <div id="exemplos"></div>
+        </div>
+
+        <div class="aviso aviso--teste" style="margin-top: 1.5rem">
+          <div>
+            <strong>Lembrete de segurança</strong>
+            Nunca coloque o <code>ACCESS_TOKEN</code> em arquivos do site (<code>public/</code>), em HTML
+            ou em JavaScript do navegador. Nesta loja ele é lido apenas pelas Cloudflare Pages Functions
+            (<code>functions/</code>) a partir das variáveis de ambiente. O arquivo <code>.dev.vars</code>
+            está no <code>.gitignore</code>.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="container rodape__grade">
+        <div>
+          <h4>GRIFES Zequinha</h4>
+          <p>
+            Loja de demonstração criada para testes de integração de pagamento.
+            Produtos, preços, estoque, frete e depoimentos são fictícios.
+          </p>
+          <p>Rua Augusta, 1500 — São Paulo/SP<br />atendimento@grifeszequinha.com.br</p>
+        </div>
+        <div>
+          <h4>Loja</h4>
+          <ul>
+            <li><a href="/catalogo.html">Catálogo completo</a></li>
+            <li><a href="/carrinho.html">Meu carrinho</a></li>
+            <li><a href="/checkout.html">Checkout</a></li>
+            <li><a href="/confirmacao.html">Status do pedido</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="/diagnostico.html">Diagnóstico das credenciais</a></li>
+            <li><a href="/diagnostico.html#cartoes">Cartões de teste</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/docs/checkout-bricks/landing" target="_blank" rel="noopener">Documentação do Brick</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/reference/online-payments/checkout-api/create-order/post" target="_blank" rel="noopener">Orders API</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pagamento</h4>
+          <div class="rodape__selo-teste">
+            <strong>Modo de teste (sandbox)</strong><br />
+            Checkout Transparente com Payment Brick + Orders API usando as credenciais de
+            <em>teste</em> do Mercado Pago. Nenhuma cobrança real é efetuada.
+          </div>
+        </div>
+      </div>
+      <div class="container rodape__base">
+        <span>© <span data-ano>2026</span> GRIFES Zequinha — loja de demonstração. Todos os dados são fictícios.</span>
+        <span>CNPJ 00.000.000/0000-00 (fictício) · Frete simulado · Página sem valor comercial</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/js/paginas/diagnostico.js"></script>
+  </body>
+</html>

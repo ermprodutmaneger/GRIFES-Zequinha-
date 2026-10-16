@@ -1,0 +1,29 @@
+{
+  "name": "grifes-zequinha",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Loja de demonstracao GRIFES Zequinha — e-commerce estatico no Cloudflare Pages com Checkout Transparente (Payment Brick) e Orders API do Mercado Pago.",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler pages dev --ip 0.0.0.0 --port 8788",
+    "dev:local": "wrangler pages dev --ip 0.0.0.0 --port 8788 --local",
+    "deploy": "wrangler pages deploy",
+    "deploy:preview": "wrangler pages deploy --branch preview",
+    "tail": "wrangler pages deployment tail",
+    "check": "node scripts/verificar-configuracao.mjs"
+  },
+  "keywords": [
+    "cloudflare-pages",
+    "mercado-pago",
+    "checkout-bricks",
+    "orders-api",
+    "ecommerce"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^4.42.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

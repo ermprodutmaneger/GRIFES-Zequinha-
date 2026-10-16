@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GRIFES Zequinha — Loja de demonstração (Mercado Pago em modo de teste)</title>
+    <meta
+      name="description"
+      content="Loja de demonstração da GRIFES Zequinha: catálogo, carrinho, frete simulado e checkout transparente com Payment Brick e Orders API do Mercado Pago em modo de teste."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
+  <body data-pagina="home" data-apenas-destaques="true">
+    <div data-faixa-teste></div>
+
+    <header class="cabecalho">
+      <div class="container cabecalho__interno">
+        <a class="marca" href="/" aria-label="GRIFES Zequinha — página inicial">
+          <img class="marca__logo" src="/img/logo-grifes-zequinha.svg" alt="GRIFES Zequinha" width="248" height="66" />
+        </a>
+        <nav class="nav" aria-label="Navegação principal">
+          <a class="nav__link" data-nav href="/catalogo.html">Catálogo</a>
+          <a class="nav__link nav__link--oculto-mobile" data-nav href="/catalogo.html">Feminino &amp; Masculino</a>
+          <a class="nav__link nav__link--oculto-mobile" data-nav href="/diagnostico.html">Diagnóstico do pagamento</a>
+          <a class="carrinho-botao" href="/carrinho.html">
+            Carrinho
+            <span class="carrinho-botao__contador escondido-visualmente" data-contador-carrinho>0</span>
+            <span class="escondido-visualmente" data-rotulo-carrinho>Carrinho vazio</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <img class="hero__imagem" src="/img/banner-atelier.webp" alt="" aria-hidden="true" width="1800" height="850" />
+        <div class="container hero__interno">
+          <span class="eyebrow" style="color: var(--ouro-claro)">Coleção essenciais · Inverno</span>
+          <h1>Alfaiataria e essenciais com acabamento de grife.</h1>
+          <p>
+            Peças de demonstração criadas para testar o checkout transparente do Mercado Pago:
+            catálogo, carrinho, frete simulado e pagamento com cartão, Pix ou boleto — tudo em
+            <strong>modo de teste</strong>.
+          </p>
+          <div class="hero__acoes">
+            <a class="botao botao--ouro" href="/catalogo.html">Explorar o catálogo</a>
+            <a class="botao botao--contorno" style="color: var(--papel); border-color: #6b6f75" href="/diagnostico.html">
+              Configurar credenciais de teste
+            </a>
+          </div>
+          <div class="hero__selos">
+            <span>✓ Payment Brick (Checkout Transparente)</span>
+            <span>✓ Orders API — POST /v1/orders</span>
+            <span>✓ Frete fictício por CEP</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="secao">
+        <div class="container">
+          <div id="aviso-catalogo"></div>
+
+          <div class="secao__cabecalho">
+            <div>
+              <span class="eyebrow">Vitrine</span>
+              <h2 class="secao__titulo">Peças em destaque</h2>
+              <p class="secao__descricao">
+                Produtos, preços e imagens fictícios — servem apenas para exercitar o fluxo de compra
+                e os cenários de pagamento (aprovado, pendente e recusado).
+              </p>
+            </div>
+            <a class="botao botao--contorno" href="/catalogo.html">Ver tudo</a>
+          </div>
+
+          <div class="grade-produtos" id="grade-produtos" aria-live="polite">
+            <p class="carregando-pagina"><span class="girando" aria-hidden="true"></span> Carregando vitrine...</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="secao secao--papel-2">
+        <div class="container">
+          <div class="secao__cabecalho">
+            <div>
+              <span class="eyebrow">Como esta loja funciona</span>
+              <h2 class="secao__titulo">Checkout transparente, sem sair do site</h2>
+            </div>
+          </div>
+
+          <div class="grade-produtos" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))">
+            <article class="painel">
+              <span class="selo selo--tinta">Passo 1</span>
+              <h3 style="margin-top: 0.85rem">Escolha as peças</h3>
+              <p>
+                Catálogo estático em Cloudflare Pages, carrinho no navegador (localStorage) e frete
+                fictício calculado por CEP e peso — nada de transportadora real.
+              </p>
+            </article>
+            <article class="painel">
+              <span class="selo selo--tinta">Passo 2</span>
+              <h3 style="margin-top: 0.85rem">Informe os dados</h3>
+              <p>
+                Nome, e-mail, CPF e endereço no formulário do site. Os valores são sempre recalculados
+                no servidor antes de virar <code>total_amount</code>.
+              </p>
+            </article>
+            <article class="painel">
+              <span class="selo selo--ouro">Passo 3</span>
+              <h3 style="margin-top: 0.85rem">Pague no Brick</h3>
+              <p>
+                O Payment Brick renderiza cartão, Pix e boleto. No envio, apenas o <strong>token</strong>
+                do cartão vai para o backend, que cria a ordem na Orders API com o seu access token.
+              </p>
+            </article>
+            <article class="painel">
+              <span class="selo selo--verde">Passo 4</span>
+              <h3 style="margin-top: 0.85rem">Veja a confirmação</h3>
+              <p>
+                A página de confirmação mostra status, QR Code do Pix, linha digitável do boleto e
+                permite reconsultar o pedido em <code>GET /v1/orders/&#123;id&#125;</code>.
+              </p>
+            </article>
+          </div>
+
+          <div class="aviso aviso--teste" style="margin-top: 2rem">
+            <div>
+              <strong>Pagamento em modo de teste</strong>
+              As credenciais usadas são as de <em>teste</em> do Mercado Pago. Nenhum valor real é
+              cobrado e os dados de cartão de teste são públicos. Configure
+              <code>MP_PUBLIC_KEY</code> e <code>MP_ACCESS_TOKEN</code> nas variáveis de ambiente do
+              Cloudflare Pages — o access token nunca é enviado ao navegador.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="container rodape__grade">
+        <div>
+          <h4>GRIFES Zequinha</h4>
+          <p>
+            Loja de demonstração criada para testes de integração de pagamento.
+            Produtos, preços, estoque, frete e depoimentos são fictícios.
+          </p>
+          <p>Rua Augusta, 1500 — São Paulo/SP<br />atendimento@grifeszequinha.com.br</p>
+        </div>
+        <div>
+          <h4>Loja</h4>
+          <ul>
+            <li><a href="/catalogo.html">Catálogo completo</a></li>
+            <li><a href="/carrinho.html">Meu carrinho</a></li>
+            <li><a href="/checkout.html">Checkout</a></li>
+            <li><a href="/confirmacao.html">Status do pedido</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="/diagnostico.html">Diagnóstico das credenciais</a></li>
+            <li><a href="/diagnostico.html#cartoes">Cartões de teste</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/docs/checkout-bricks/landing" target="_blank" rel="noopener">Documentação do Brick</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/reference/online-payments/checkout-api/create-order/post" target="_blank" rel="noopener">Orders API</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pagamento</h4>
+          <div class="rodape__selo-teste">
+            <strong>Modo de teste (sandbox)</strong><br />
+            Checkout Transparente com Payment Brick + Orders API usando as credenciais de
+            <em>teste</em> do Mercado Pago. Nenhuma cobrança real é efetuada.
+          </div>
+        </div>
+      </div>
+      <div class="container rodape__base">
+        <span>© <span data-ano>2026</span> GRIFES Zequinha — loja de demonstração. Todos os dados são fictícios.</span>
+        <span>CNPJ 00.000.000/0000-00 (fictício) · Frete simulado · Página sem valor comercial</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/js/paginas/catalogo.js"></script>
+  </body>
+</html>

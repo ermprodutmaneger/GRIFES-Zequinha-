@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Produto — GRIFES Zequinha (loja de teste)</title>
+    <meta name="description" content="Página de produto da loja de demonstração GRIFES Zequinha, para testes do checkout transparente do Mercado Pago." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
+  <body data-pagina="produto">
+    <div data-faixa-teste></div>
+
+    <header class="cabecalho">
+      <div class="container cabecalho__interno">
+        <a class="marca" href="/" aria-label="GRIFES Zequinha — página inicial">
+          <img class="marca__logo" src="/img/logo-grifes-zequinha.svg" alt="GRIFES Zequinha" width="248" height="66" />
+        </a>
+        <nav class="nav" aria-label="Navegação principal">
+          <a class="nav__link" data-nav href="/catalogo.html">Catálogo</a>
+          <a class="nav__link nav__link--oculto-mobile" data-nav href="/diagnostico.html">Diagnóstico do pagamento</a>
+          <a class="carrinho-botao" href="/carrinho.html">
+            Carrinho
+            <span class="carrinho-botao__contador escondido-visualmente" data-contador-carrinho>0</span>
+            <span class="escondido-visualmente" data-rotulo-carrinho>Carrinho vazio</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <div id="produto" aria-live="polite"></div>
+
+      <section class="secao">
+        <div class="secao__cabecalho">
+          <div>
+            <span class="eyebrow">Combina com</span>
+            <h2 class="secao__titulo">Da mesma categoria</h2>
+          </div>
+          <a class="botao botao--contorno" href="/catalogo.html">Ver catálogo</a>
+        </div>
+        <div class="grade-produtos" id="relacionados"></div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="container rodape__grade">
+        <div>
+          <h4>GRIFES Zequinha</h4>
+          <p>
+            Loja de demonstração criada para testes de integração de pagamento.
+            Produtos, preços, estoque, frete e depoimentos são fictícios.
+          </p>
+          <p>Rua Augusta, 1500 — São Paulo/SP<br />atendimento@grifeszequinha.com.br</p>
+        </div>
+        <div>
+          <h4>Loja</h4>
+          <ul>
+            <li><a href="/catalogo.html">Catálogo completo</a></li>
+            <li><a href="/carrinho.html">Meu carrinho</a></li>
+            <li><a href="/checkout.html">Checkout</a></li>
+            <li><a href="/confirmacao.html">Status do pedido</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="/diagnostico.html">Diagnóstico das credenciais</a></li>
+            <li><a href="/diagnostico.html#cartoes">Cartões de teste</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/docs/checkout-bricks/landing" target="_blank" rel="noopener">Documentação do Brick</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/reference/online-payments/checkout-api/create-order/post" target="_blank" rel="noopener">Orders API</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pagamento</h4>
+          <div class="rodape__selo-teste">
+            <strong>Modo de teste (sandbox)</strong><br />
+            Checkout Transparente com Payment Brick + Orders API usando as credenciais de
+            <em>teste</em> do Mercado Pago. Nenhuma cobrança real é efetuada.
+          </div>
+        </div>
+      </div>
+      <div class="container rodape__base">
+        <span>© <span data-ano>2026</span> GRIFES Zequinha — loja de demonstração. Todos os dados são fictícios.</span>
+        <span>CNPJ 00.000.000/0000-00 (fictício) · Frete simulado · Página sem valor comercial</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/js/paginas/produto.js"></script>
+  </body>
+</html>

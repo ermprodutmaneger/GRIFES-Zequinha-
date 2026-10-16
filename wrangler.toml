@@ -1,0 +1,33 @@
+# ---------------------------------------------------------------------------
+# Cloudflare Pages — projeto GRIFES Zequinha
+# ---------------------------------------------------------------------------
+# O site e 100% estatico (HTML/CSS/JS) e usa Cloudflare Pages Functions
+# apenas para a parte que NAO pode rodar no navegador:
+#   - tokenizar/criar o pedido na Orders API do Mercado Pago (usa ACCESS_TOKEN)
+#   - calcular o frete simulado no servidor
+#
+# AS CREDENCIAIS NAO FICAM NESTE ARQUIVO.
+#   * Producao/preview -> Cloudflare Dashboard > Pages > projeto >
+#     Settings > Variables and Secrets (adicionar MP_PUBLIC_KEY e MP_ACCESS_TOKEN)
+#   * Desenvolvimento local -> arquivo .dev.vars (veja .dev.vars.example)
+# ---------------------------------------------------------------------------
+
+name = "grifes-zequinha"
+compatibility_date = "2025-09-23"
+pages_build_output_dir = "public"
+
+# Variaveis publicas (podem ficar no repositorio — nao sao segredo).
+[vars]
+# auto   -> detecta modo de teste pela propria credencial (teste/producao)
+# teste  -> forca a faixa "MODO DE TESTE" em todas as paginas
+# producao -> esconde a faixa (use somente com credenciais de producao)
+MP_MODO = "auto"
+
+# Nome da loja exibido no site/diagnostico.
+MP_LOJA_NOME = "GRIFES Zequinha"
+
+# Itens por pedido (protecao simples contra abuso).
+MP_MAX_ITENS_POR_PEDIDO = "10"
+
+# Frete simulado: valor minimo do subtotal para frete gratis na opcao economica.
+MP_FRETE_GRATIS_ACIMA_DE = "299.90"

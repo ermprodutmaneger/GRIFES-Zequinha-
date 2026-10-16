@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Confirmação do pedido — GRIFES Zequinha (loja de teste)</title>
+    <meta name="description" content="Confirmação do pedido com status do Mercado Pago (modo de teste): aprovação, Pix, boleto e recusa." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
+  <body data-pagina="confirmacao">
+    <div data-faixa-teste></div>
+
+    <header class="cabecalho">
+      <div class="container cabecalho__interno">
+        <a class="marca" href="/" aria-label="GRIFES Zequinha — página inicial">
+          <img class="marca__logo" src="/img/logo-grifes-zequinha.svg" alt="GRIFES Zequinha" width="248" height="66" />
+        </a>
+        <nav class="nav" aria-label="Navegação principal">
+          <a class="nav__link" data-nav href="/catalogo.html">Catálogo</a>
+          <a class="nav__link nav__link--oculto-mobile" data-nav href="/diagnostico.html">Diagnóstico do pagamento</a>
+          <a class="carrinho-botao" href="/carrinho.html">
+            Carrinho
+            <span class="carrinho-botao__contador escondido-visualmente" data-contador-carrinho>0</span>
+            <span class="escondido-visualmente" data-rotulo-carrinho>Carrinho vazio</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <nav class="migalhas" aria-label="Você está em">
+        <a href="/">Início</a> / <a href="/carrinho.html">Carrinho</a> / <span>Confirmação</span>
+      </nav>
+
+      <section class="secao" style="padding-top: 1.5rem">
+        <div id="status-pedido" aria-live="polite"></div>
+
+        <div class="painel" style="margin-top: 1.5rem">
+          <h2 style="font-size: 1.2rem">O que testar nesta tela</h2>
+          <div class="grade-produtos" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr))">
+            <div>
+              <h3 style="font-size: 1rem">Cartão aprovado</h3>
+              <p style="font-size: .9rem; color: var(--tinta-3)">
+                Use o titular <code>APRO</code> nos cartões de teste: a ordem vira <code>processed</code> com
+                pagamento <code>approved</code> e <code>status_detail: accredited</code>.
+              </p>
+            </div>
+            <div>
+              <h3 style="font-size: 1rem">Cartão recusado</h3>
+              <p style="font-size: .9rem; color: var(--tinta-3)">
+                Titular <code>OTHE</code>: pagamento <code>rejected</code> — a tela mostra o motivo retornado
+                em <code>status_detail</code> e permite tentar de novo no checkout.
+              </p>
+            </div>
+            <div>
+              <h3 style="font-size: 1rem">Pix pendente</h3>
+              <p style="font-size: .9rem; color: var(--tinta-3)">
+                Escolha Pix: exibimos o QR Code / copia e cola retornados em
+                <code>payment_method.qr_code</code> e reconsultamos o status a cada 15 segundos.
+              </p>
+            </div>
+            <div>
+              <h3 style="font-size: 1rem">Reconsultar status</h3>
+              <p style="font-size: .9rem; color: var(--tinta-3)">
+                O botão chama <code>GET /api/orders/&#123;id&#125;</code>, que por sua vez consulta
+                <code>GET /v1/orders/&#123;id&#125;</code> no Mercado Pago com o access token de teste.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="container rodape__grade">
+        <div>
+          <h4>GRIFES Zequinha</h4>
+          <p>
+            Loja de demonstração criada para testes de integração de pagamento.
+            Produtos, preços, estoque, frete e depoimentos são fictícios.
+          </p>
+          <p>Rua Augusta, 1500 — São Paulo/SP<br />atendimento@grifeszequinha.com.br</p>
+        </div>
+        <div>
+          <h4>Loja</h4>
+          <ul>
+            <li><a href="/catalogo.html">Catálogo completo</a></li>
+            <li><a href="/carrinho.html">Meu carrinho</a></li>
+            <li><a href="/checkout.html">Checkout</a></li>
+            <li><a href="/confirmacao.html">Status do pedido</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="/diagnostico.html">Diagnóstico das credenciais</a></li>
+            <li><a href="/diagnostico.html#cartoes">Cartões de teste</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/docs/checkout-bricks/landing" target="_blank" rel="noopener">Documentação do Brick</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/reference/online-payments/checkout-api/create-order/post" target="_blank" rel="noopener">Orders API</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pagamento</h4>
+          <div class="rodape__selo-teste">
+            <strong>Modo de teste (sandbox)</strong><br />
+            Checkout Transparente com Payment Brick + Orders API usando as credenciais de
+            <em>teste</em> do Mercado Pago. Nenhuma cobrança real é efetuada.
+          </div>
+        </div>
+      </div>
+      <div class="container rodape__base">
+        <span>© <span data-ano>2026</span> GRIFES Zequinha — loja de demonstração. Todos os dados são fictícios.</span>
+        <span>CNPJ 00.000.000/0000-00 (fictício) · Frete simulado · Página sem valor comercial</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/js/paginas/confirmacao.js"></script>
+  </body>
+</html>

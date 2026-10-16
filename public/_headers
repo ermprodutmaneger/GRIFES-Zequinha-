@@ -1,0 +1,28 @@
+# ===========================================================================
+# Cabecalhos de seguranca aplicados a TODAS as rotas do Cloudflare Pages.
+# Formato do Cloudflare: cada linha e "Nome: valor" e comentarios usam "#".
+#
+# Observacao sobre as paginas de pagamento: o Payment Brick carrega o SDK em
+# sdk.mercadopago.com e renderiza o formulario dentro de um iframe de
+# mercadopago.com. Por isso esses dominios precisam estar liberados em
+# script-src / frame-src / connect-src — sem isso o Brick nao aparece.
+# ===========================================================================
+
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(self "https://sdk.mercadopago.com")
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.mercadopago.com https://www.mercadopago.com.br; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.mercadopago.com https://api.mercadolibre.com https://*.mercadopago.com https://*.mercadopago.com.br https://*.mlstatic.com; frame-src https://*.mercadopago.com https://*.mercadolibre.com https://www.mercadopago.com.br; base-uri 'self'; form-action 'self'; object-src 'none'
+
+/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/css/*
+  Cache-Control: public, max-age=604800
+
+/js/*
+  Cache-Control: public, max-age=604800
+
+/api/*
+  Cache-Control: no-store

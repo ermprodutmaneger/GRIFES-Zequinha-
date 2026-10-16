@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout — GRIFES Zequinha (Mercado Pago em modo de teste)</title>
+    <meta
+      name="description"
+      content="Checkout transparente de demonstração com Payment Brick e Orders API do Mercado Pago em modo de teste."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
+  <body data-pagina="checkout">
+    <div data-faixa-teste></div>
+
+    <header class="cabecalho">
+      <div class="container cabecalho__interno">
+        <a class="marca" href="/" aria-label="GRIFES Zequinha — página inicial">
+          <img class="marca__logo" src="/img/logo-grifes-zequinha.svg" alt="GRIFES Zequinha" width="248" height="66" />
+        </a>
+        <nav class="nav" aria-label="Navegação principal">
+          <a class="nav__link" data-nav href="/carrinho.html">Carrinho</a>
+          <a class="nav__link nav__link--oculto-mobile" data-nav href="/diagnostico.html">Diagnóstico do pagamento</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <nav class="migalhas" aria-label="Você está em">
+        <a href="/">Início</a> / <a href="/carrinho.html">Carrinho</a> / <span>Checkout</span>
+      </nav>
+
+      <section class="secao" style="padding-top: 1.5rem">
+        <div class="secao__cabecalho">
+          <div>
+            <span class="eyebrow">Passo 2 e 3 de 3</span>
+            <h1 class="secao__titulo">Checkout transparente</h1>
+            <p class="secao__descricao">
+              Preencha seus dados, escolha o frete simulado e pague com cartão, Pix ou boleto sem sair do site.
+              O formulário de pagamento é renderizado pelo <strong>Payment Brick</strong> do Mercado Pago.
+            </p>
+          </div>
+        </div>
+
+        <div id="aviso-checkout" style="margin-bottom: 1.5rem"></div>
+
+        <div class="checkout-layout">
+          <div id="conteudo-checkout">
+            <div class="painel">
+              <div class="passo-cabecalho">
+                <span class="passo-numero">1</span>
+                <h2>Revise o pedido e informe seus dados</h2>
+              </div>
+
+              <div id="itens-checkout" aria-live="polite" style="margin-bottom:1.25rem"></div>
+
+              <form class="formulario" id="form-checkout" novalidate>
+                <div class="grade-campos">
+                  <div class="campo campo--largo">
+                    <label for="nome">Nome completo *</label>                    <input id="nome" name="nome" autocomplete="name" placeholder="Ex.: Ana Souza" />
+                    <span class="campo__erro" id="erro-nome"></span>
+                  </div>
+                  <div class="campo">
+                    <label for="email">E-mail *</label>
+                    <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" />
+                    <span class="campo__erro" id="erro-email"></span>
+                  </div>
+                  <div class="campo">
+                    <label for="cpf">CPF *</label>
+                    <input id="cpf" name="cpf" inputmode="numeric" placeholder="000.000.000-00" />
+                    <span class="dica">Use um CPF válido matematicamente. Nos testes do Mercado Pago vale usar um CPF de teste.</span>
+                    <span class="campo__erro" id="erro-cpf"></span>
+                  </div>
+                  <div class="campo">
+                    <label for="telefone">Telefone com DDD *</label>
+                    <input id="telefone" name="telefone" inputmode="tel" autocomplete="tel" placeholder="(11) 91234-5678" />
+                    <span class="campo__erro" id="erro-telefone"></span>
+                  </div>
+                  <div class="campo campo--largo">
+                    <label for="observacoes">Observações do pedido (opcional)</label>
+                    <textarea id="observacoes" name="observacoes" rows="2" placeholder="Ex.: presente para embalar, entregar após as 14h..."></textarea>
+                    <span class="dica">As observações são gravadas apenas neste navegador (loja de teste).</span>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="painel">
+              <div class="passo-cabecalho">
+                <span class="passo-numero">2</span>
+                <h2>Entrega e frete simulado</h2>
+              </div>
+
+              <div class="grade-campos">
+                <div class="campo">
+                  <label for="cep">CEP *</label>
+                  <input id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="01310-100" />
+                  <span class="campo__erro" id="erro-cep"></span>
+                </div>
+                <div class="campo" style="align-self: end">
+                  <button class="botao botao--primario" type="button" id="calcular-frete-checkout">Calcular</button>
+                </div>
+                <div class="campo">
+                  <label for="rua">Rua / Avenida *</label>
+                  <input id="rua" name="rua" autocomplete="address-line1" placeholder="Av. Paulista" />
+                  <span class="campo__erro" id="erro-rua"></span>
+                </div>
+                <div class="campo">
+                  <label for="numero">Número *</label>
+                  <input id="numero" name="numero" inputmode="numeric" placeholder="1000" />
+                  <span class="campo__erro" id="erro-numero"></span>
+                </div>
+                <div class="campo">
+                  <label for="complemento">Complemento</label>
+                  <input id="complemento" name="complemento" autocomplete="address-line2" placeholder="Apto 42, bloco B" />
+                </div>
+                <div class="campo">
+                  <label for="bairro">Bairro *</label>
+                  <input id="bairro" name="bairro" autocomplete="address-level3" placeholder="Bela Vista" />
+                  <span class="campo__erro" id="erro-bairro"></span>
+                </div>
+                <div class="campo">
+                  <label for="cidade">Cidade *</label>
+                  <input id="cidade" name="cidade" autocomplete="address-level2" placeholder="São Paulo" />
+                  <span class="campo__erro" id="erro-cidade"></span>
+                </div>
+                <div class="campo">
+                  <label for="uf">UF *</label>
+                  <input id="uf" name="uf" maxlength="2" placeholder="SP" style="text-transform: uppercase" />
+                  <span class="campo__erro" id="erro-uf"></span>
+                </div>
+              </div>
+
+              <div id="aviso-frete-checkout" style="margin-top: 1rem"></div>
+              <div class="opcoes-frete" id="opcoes-frete"></div>
+            </div>
+
+            <div class="painel">
+              <button class="botao botao--ouro botao--largo" type="button" id="continuar-pagamento">
+                Continuar para o pagamento —
+                <span id="total-botao">R$ 0,00</span>
+              </button>
+              <p class="preciso-de-cep" style="margin-top: .85rem">
+                Ao continuar, o formulário de pagamento seguro do Mercado Pago é carregado abaixo.
+                Em <strong>modo de teste</strong> nenhuma cobrança real acontece.
+              </p>
+            </div>
+
+            <div class="painel" id="secao-pagamento" hidden>
+              <div class="passo-cabecalho">
+                <span class="passo-numero">3</span>
+                <h2>Pagamento</h2>
+                <span class="etiqueta-estado">Payment Brick · Order API</span>
+              </div>
+
+              <div id="erro-pedido" style="margin-bottom: 1rem"></div>
+              <div id="container-brick" class="brick-container"></div>
+
+              <details style="margin-top: 1.25rem">
+                <summary style="cursor: pointer; font-weight: 600">Como este pagamento é processado (modo de teste)</summary>
+                <ol style="margin: .75rem 0 0; padding-left: 1.2rem; color: var(--tinta-3); font-size: .9rem">
+                  <li>O Brick tokeniza o cartão no navegador usando a <code>MP_PUBLIC_KEY</code> de teste.</li>
+                  <li>O token + os itens são enviados ao backend em <code>POST /api/orders</code>.</li>
+                  <li>O backend recalcula o total e chama <code>POST https://api.mercadopago.com/v1/orders</code>
+                    com <code>processing_mode: automatic</code> e o <code>MP_ACCESS_TOKEN</code> de teste.</li>
+                  <li>A página de confirmação consulta <code>GET /v1/orders/&#123;id&#125;</code> para mostrar o status e o Pix/boleto.</li>
+                </ol>
+              </details>
+            </div>
+          </div>
+
+          <aside class="painel painel--resumo" id="resumo-checkout" aria-live="polite"></aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      <div class="container rodape__grade">
+        <div>
+          <h4>GRIFES Zequinha</h4>
+          <p>
+            Loja de demonstração criada para testes de integração de pagamento.
+            Produtos, preços, estoque, frete e depoimentos são fictícios.
+          </p>
+          <p>Rua Augusta, 1500 — São Paulo/SP<br />atendimento@grifeszequinha.com.br</p>
+        </div>
+        <div>
+          <h4>Loja</h4>
+          <ul>
+            <li><a href="/catalogo.html">Catálogo completo</a></li>
+            <li><a href="/carrinho.html">Meu carrinho</a></li>
+            <li><a href="/checkout.html">Checkout</a></li>
+            <li><a href="/confirmacao.html">Status do pedido</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="/diagnostico.html">Diagnóstico das credenciais</a></li>
+            <li><a href="/diagnostico.html#cartoes">Cartões de teste</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/docs/checkout-bricks/landing" target="_blank" rel="noopener">Documentação do Brick</a></li>
+            <li><a href="https://www.mercadopago.com.br/developers/pt/reference/online-payments/checkout-api/create-order/post" target="_blank" rel="noopener">Orders API</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pagamento</h4>
+          <div class="rodape__selo-teste">
+            <strong>Modo de teste (sandbox)</strong><br />
+            Checkout Transparente com Payment Brick + Orders API usando as credenciais de
+            <em>teste</em> do Mercado Pago. Nenhuma cobrança real é efetuada.
+          </div>
+        </div>
+      </div>
+      <div class="container rodape__base">
+        <span>© <span data-ano>2026</span> GRIFES Zequinha — loja de demonstração. Todos os dados são fictícios.</span>
+        <span>CNPJ 00.000.000/0000-00 (fictício) · Frete simulado · Página sem valor comercial</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/js/paginas/checkout.js"></script>
+  </body>
+</html>

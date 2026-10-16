@@ -72,7 +72,14 @@ if (!devVarsExiste) {
 } else {
   ok.push(`Credenciais locais presentes (${publicKey.slice(0, 8)}... / ${accessToken.slice(0, 8)}...).`);
   if (!publicKey.startsWith('TEST-') && !accessToken.startsWith('TEST-')) {
-    avisos.push('As credenciais NAO parecem de teste (prefixo TEST- ausente). Confirme que copiou de "Credenciais de teste".');
+    const marcadaComoTeste = /^MP_CREDENCIAL_TESTE\s*=\s*"?true"?/m.test(textoDevVars);
+    if (marcadaComoTeste) {
+      ok.push('Credenciais com prefixo APP_USR- marcadas como de teste (MP_CREDENCIAL_TESTE=true) — aplicação criada em conta de teste.');
+    } else {
+      avisos.push(
+        'As credenciais NAO tem o prefixo TEST-. Se a aplicacao pertence a uma CONTA DE TESTE (comum: apps novos usam APP_USR-), defina MP_CREDENCIAL_TESTE="true" para manter a faixa de aviso.',
+      );
+    }
   }
   if (/^APP_USR-/.test(accessToken) && publicKey.startsWith('TEST-')) {
     avisos.push('Public key de teste + access token APP_USR: mistura possivel de credenciais. Use o par completo da mesma aplicacao.');

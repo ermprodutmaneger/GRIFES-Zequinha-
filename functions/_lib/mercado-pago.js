@@ -91,6 +91,10 @@ export function lerConfiguracao(env = {}) {
     freteComoItem: String(env.MP_FRETE_COMO_ITEM || '').toLowerCase() === 'true',
     enviarIssuerId: String(env.MP_ENVIAR_ISSUER_ID || '').toLowerCase() === 'true',
     webhookSecret: String(env.MP_WEBHOOK_SECRET || ''),
+    appId: String(env.MP_APP_ID || ''),
+    userId: String(env.MP_USER_ID || ''),
+    // Prefill opcional do e-mail do comprador de teste no checkout (nao e segredo).
+    emailCompradorTeste: String(env.MP_EMAIL_COMPRADOR_TESTE || '').trim(),
     avisos,
   };
 }
@@ -108,6 +112,10 @@ export function configuracaoPublica(config) {
     credencial_teste: config.credencialTeste,
     modo: config.modo,
     loja: config.lojaNome,
+    app_id: config.appId || null,
+    user_id: config.userId || null,
+    // Em modo de teste o checkout pode pre-preencher o e-mail do comprador de teste.
+    email_comprador_teste: config.modoTeste ? config.emailCompradorTeste || null : null,
     avisos: config.avisos,
     // Ajuda a tela de diagnostico a orientar o lojista, sem vazar o segredo.
     access_token_mascarado: mascarar(config.accessToken),

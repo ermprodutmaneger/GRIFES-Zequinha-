@@ -66,6 +66,10 @@ npm run check      # confere estrutura, assets, credenciais e vazamentos antes d
 
 ## 3. Onde colocar as credenciais de teste (os "campos" para preencher depois)
 
+> 🔐 **Nunca** coloque `MP_ACCESS_TOKEN` em `public/` (HTML/JS/CSS) nem o comite: ele é lido somente
+> pelas Pages Functions, via variável de ambiente (`.dev.vars` local ou *Secret* no Cloudflare).
+> Se uma credencial vazar (print, chat, commit), rotacione-a no painel do Mercado Pago.
+
 ### 3.1 Localmente — arquivo `.dev.vars` (ignorado pelo Git)
 
 ```ini
@@ -100,6 +104,46 @@ aplicações*) → selecione a aplicação → aba **Credenciais de teste**:
 
 > Rode `npm run check` ou abra `/diagnostico.html` depois de colar: a página mostra o que está OK,
 > o que falta e o resultado real do `GET /users/me` com a sua credencial.
+
+### 3.4 Validar as credenciais em 1 comando
+
+```bash
+npm run testar:mp                       # bateria completa (cartão aprovado/recusado/pendente, Pix e boleto)
+npm run testar:mp -- --cenario=pix
+npm run testar:mp -- --cenario=recusado --verbose
+npm run testar:mp -- --cancelar        # cancela os pedidos pendentes criados no teste
+npm run testar:mp -- --frete-como-item # testa o fallback do frete como linha de item
+```
+
+O script (`scripts/testar-mercado-pago.mjs`) usa **o mesmo código de produção da loja** para montar e
+ler os pedidos e executa, em ordem:
+
+| Passo | O que prova |
+| --- | --- |
+| 1 | `MP_PUBLIC_KEY` e `MP_ACCESS_TOKEN` foram carregados (mascarados na saída) |
+| 2 | `GET /users/me` — access token válido + qual conta/aplicação está respondendo |
+| 3 | `GET /v1/payment_methods` — cartão (visa/master), **pix** e **boleto** ativos |
+| 4 | `POST /v1/card_tokens` — public key válida e cartão de teste tokenizado (`live_mode`) |
+| 5 | `POST /v1/orders` — **cria uma ordem real de teste** com o payload idêntico ao do site |
+| 6 | `GET /v1/orders/{id}` — reconsulta e a normalização usada na tela de confirmação |
+
+O resultado esperado por cenário (nome do titular controla o desfecho):
+
+| Cenário | Cartão / meio | Resultado esperado |
+| --- | --- | --- |
+| `aprovado` | 5031 4332 1540 6351, titular **APRO** | `approved` / `accredited` |
+| `recusado` | mesmo cartão, titular **OTHE** | `rejected` / `cc_rejected_other_reason` |
+| `pendente` | mesmo cartão, titular **CONT** | `pending` / `in_process` |
+| `pix` | `pix` (sem token) | `pending` + `qr_code` no retorno |
+| `boleto` | `bolbradesco` | `pending` + `ticket_url`/linha digitável |
+
+> ⚠️ O script precisa de **saída de rede para `api.mercadopago.com`**. Ele não funciona em
+> sandboxes/ambientes com egress bloqueado (nesse caso ele avisa e sai com erro) — rode na sua máquina
+> ou direto no Cloudflare Pages.
+
+**Ver o dinheiro (de teste) no painel:** entre em `mercadopago.com.br` com o **usuário de teste**
+(ex.: `TESTUSER3608931920570283869`, senha e código de verificação fornecidos no painel de contas de
+teste) para acompanhar as ordens e pagamentos criados com essas credenciais.
 
 ---
 
@@ -171,6 +215,7 @@ Decisões de segurança aplicadas:
 digitável e reconsulta o status a cada 15 segundos.
 
 **Checklist sugerido de testes**
+0. `npm run testar:mp` → valida credenciais, tokenização e criação/reconsulta de ordens na API real.
 1. Cartão aprovado → confirmação verde com valor pago e itens.
 2. Cartão recusado → confirmação vermelha com o motivo (`status_detail`) e opção de tentar de novo.
 3. Pix pendente → QR Code / copia e cola exibidos; status muda depois do pagamento de teste.
@@ -218,7 +263,9 @@ Nenhuma transportadora é consultada. Para trocar por um cálculo real, substitu
 | `MP_ACCESS_TOKEN` | Sim (para cobrar) | Access token **de teste**. Só no servidor — configure como *Secret* |
 | `MP_MODO` | Não (`auto`) | `auto` \| `teste` \| `producao` |
 | `MP_SIMULACAO` | Não | `true` força simulação mesmo com credenciais |
-| `MP_CREDENCIAL_TESTE` | Não | `true` quando a credencial de teste vem sem prefixo `TEST-` |
+| `MP_CREDENCIAL_TESTE` | Não | `true` quando a credencial de teste vem sem prefixo `TEST-` (ex.: apps criados dentro de uma **conta de teste**, que usam `APP_USR-`) |
+| `MP_EMAIL_COMPRADOR_TESTE` | Não | E-mail do comprador de teste — aparece como dica e pré-preenche o campo no checkout |
+| `MP_APP_ID` / `MP_USER_ID` | Não | Apenas exibição no `/diagnostico.html` e conferência com o script de teste |
 | `MP_WEBHOOK_SECRET` | Não | Assinatura secreta do webhook (`x-signature`) |
 | `MP_FRETE_GRATIS_ACIMA_DE` | Não (`299.90`) | Subtotal que zera o frete econômico |
 | `MP_MAX_ITENS_POR_PEDIDO` | Não (`10`) | Limite de linhas por pedido |
@@ -271,7 +318,9 @@ Como o Pages não tem banco de dados, o status é apenas logado. Para persistir 
 │       ├── api.js  carrinho.js  formato.js  layout.js
 │       ├── componentes/card.js
 │       └── paginas/{catalogo,produto,carrinho,checkout,confirmacao,diagnostico}.js
-├── scripts/verificar-configuracao.mjs   # npm run check
+├── scripts/
+│   ├── verificar-configuracao.mjs       # npm run check
+│   └── testar-mercado-pago.mjs          # npm run testar:mp (bateria completa na API de teste)
 ├── .dev.vars.example              # modelo das credenciais locais (copie para .dev.vars)
 ├── .env.example                   # referência das variáveis
 ├── wrangler.toml                  # Pages + variáveis públicas
@@ -291,6 +340,9 @@ Como o Pages não tem banco de dados, o status é apenas logado. Para persistir 
 | Erro de `shipment` na Orders API | Ative `MP_FRETE_COMO_ITEM="true"` (o frete passa a ser uma linha de item; o total não muda) |
 | Erro de emissor de cartão | Ative `MP_ENVIAR_ISSUER_ID="true"` |
 | Pedido aprovado mas sem e-mail de notificação | Em modo de teste o Mercado Pago não envia e-mails reais |
+| "O servidor desta prévia não alcança o Mercado Pago" (`falha_rede`) | O ambiente onde o site está hospedado não tem saída para `api.mercadopago.com` (comum em sandbox/preview fechado). O Brick renderiza, mas a ordem é criada no servidor: rode `npm run dev` na sua máquina ou faça o deploy no Cloudflare Pages |
+| Diagnóstico mostra "Não conseguiu alcançar api.mercadopago.com" com status de atenção | Mesmo caso acima: é limitação de rede do ambiente, **não** é credencial inválida. Valide com `npm run testar:mp` localmente |
+| Erro `payer` na criação da ordem | Use o e-mail do comprador de teste (defina `MP_EMAIL_COMPRADOR_TESTE`) e um CPF válido |
 
 ---
 

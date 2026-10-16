@@ -26,5 +26,13 @@ MP_WEBHOOK_SECRET=""
 # auto | teste | producao
 MP_MODO="auto"
 
+# Opcional: e-mail do comprador de teste (aparece como dica no checkout).
+# Padrao dos usuarios de teste: test_user_<id>@testuser.com
+MP_EMAIL_COMPRADOR_TESTE=""
+
+# Opcional: identificacao da aplicacao (exibida em /diagnostico.html)
+MP_APP_ID=""
+MP_USER_ID=""
+
 # Preencha para testar o site SEM credenciais (pagamento 100% simulado):
 # MP_SIMULACAO="true"

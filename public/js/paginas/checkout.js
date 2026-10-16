@@ -109,24 +109,38 @@ function persistirComprador() {
 function restaurarComprador() {
   try {
     const salvo = JSON.parse(localStorage.getItem(CHAVE_COMPRADOR) || 'null');
-    if (!salvo) return;
-    const preencher = (id, valor) => {
-      const elemento = document.getElementById(id);
-      if (elemento && valor && !elemento.value) elemento.value = valor;
-    };
-    preencher('nome', salvo.nome);
-    preencher('email', salvo.email);
-    preencher('cpf', salvo.cpf);
-    preencher('telefone', salvo.telefone);
-    preencher('cep', salvo.cep);
-    preencher('rua', salvo.rua);
-    preencher('numero', salvo.numero);
-    preencher('complemento', salvo.complemento);
-    preencher('bairro', salvo.bairro);
-    preencher('cidade', salvo.cidade);
-    preencher('uf', salvo.uf);
+    if (salvo) {
+      const preencher = (id, valor) => {
+        const elemento = document.getElementById(id);
+        if (elemento && valor && !elemento.value) elemento.value = valor;
+      };
+      preencher('nome', salvo.nome);
+      preencher('email', salvo.email);
+      preencher('cpf', salvo.cpf);
+      preencher('telefone', salvo.telefone);
+      preencher('cep', salvo.cep);
+      preencher('rua', salvo.rua);
+      preencher('numero', salvo.numero);
+      preencher('complemento', salvo.complemento);
+      preencher('bairro', salvo.bairro);
+      preencher('cidade', salvo.cidade);
+      preencher('uf', salvo.uf);
+    }
   } catch {
     /* ignora */
+  }
+
+  // Modo de teste: sugere o e-mail do comprador de teste configurado em
+  // MP_EMAIL_COMPRADOR_TESTE (evita recusa por pagador desconhecido).
+  const emailTeste = config?.email_comprador_teste;
+  const campoEmail = document.getElementById('email');
+  const dicaEmail = document.getElementById('dica-email-teste');
+  if (emailTeste && campoEmail) {
+    if (!campoEmail.value) campoEmail.value = emailTeste;
+    if (dicaEmail) {
+      dicaEmail.textContent = `Modo de teste: use o e-mail do comprador de teste (${emailTeste}).`;
+      dicaEmail.removeAttribute('hidden');
+    }
   }
 }
 
@@ -581,13 +595,28 @@ function mostrarErroPedido(e) {
     '';
 
   const credencialInvalida = e?.codigo === 'credencial_invalida';
+  const falhaDeRede = e?.codigo === 'falha_rede' || e?.status === 503;
 
   blocoAviso(containerErroPedido, {
     tipo: 'erro',
-    titulo: credencialInvalida ? 'Credenciais do Mercado Pago recusadas' : 'Não foi possível concluir o pagamento',
+    titulo: credencialInvalida
+      ? 'Credenciais do Mercado Pago recusadas'
+      : falhaDeRede
+        ? 'O servidor desta prévia não alcança o Mercado Pago'
+        : 'Não foi possível concluir o pagamento',
     html: `
       ${esc(e?.message || 'Erro inesperado.')}
       ${detalhes ? `<br><br><small><strong>Detalhe técnico:</strong> ${esc(detalhes)}</small>` : ''}
+      ${
+        falhaDeRede
+          ? `<br><br>Isso acontece quando o site roda em um ambiente sem saída para
+             <code>api.mercadopago.com</code> (sandbox/prévia fechada). O Payment Brick carrega
+             normalmente, mas a criação da ordem precisa de rede.
+             <br><br><strong>Como testar de verdade:</strong> rode a loja na sua máquina
+             (<code>npm run dev</code>) ou faça o deploy no Cloudflare Pages — nos dois casos a
+             chamada à Orders API funciona.`
+          : ''
+      }
       ${
         credencialInvalida
           ? '<br><br><a class="link-simples" href="/diagnostico.html">Abrir diagnostico das credenciais →</a>'

@@ -71,16 +71,31 @@ export async function onRequestGet({ env }) {
     esperado: 'Informativo',
   });
 
+  itens.push({
+    item: 'Aplicação de teste',
+    status: config.appId ? 'ok' : 'pendente',
+    mensagem: config.appId
+      ? `Aplicação ${config.appId}${config.userId ? ` (usuário ${config.userId})` : ''}.${
+          config.emailCompradorTeste ? ` Comprador de teste sugerido: ${config.emailCompradorTeste}.` : ''
+        }`
+      : 'Opcional: informe MP_APP_ID, MP_USER_ID e MP_EMAIL_COMPRADOR_TESTE para a loja pré-preencher o e-mail do comprador de teste.',
+    esperado: 'MP_APP_ID, MP_USER_ID, MP_EMAIL_COMPRADOR_TESTE',
+  });
+
   // Teste real da credencial: "quem sou eu" / lista de meios de pagamento.
   let conta = null;
   if (config.accessToken && !config.simulacao) {
     conta = await consultarConta(config.accessToken);
+    const statusConexao = conta.ok ? 'ok' : conta.rede ? 'atencao' : 'erro';
+    const mensagemConexao = conta.ok
+      ? `Autenticacao OK. Conta: ${conta.apelido || conta.email || conta.id} (pais ${conta.pais || 'n/d'}) — ${conta.meios_de_pagamento} meios de pagamento ativos.`
+      : conta.rede
+        ? 'Este ambiente NAO conseguiu alcancar api.mercadopago.com (rede/proxy bloqueado). As credenciais estao carregadas; valide com "npm run testar:mp" na sua maquina ou depois do deploy no Cloudflare Pages.'
+        : `Falha ao autenticar: ${conta.erro}`;
     itens.push({
       item: 'Conexao com a API do Mercado Pago',
-      status: conta.ok ? 'ok' : 'erro',
-      mensagem: conta.ok
-        ? `Autenticacao OK. Conta: ${conta.apelido || conta.email || conta.id} (pais ${conta.pais || 'n/d'}) — ${conta.meios_de_pagamento} meios de pagamento ativos.`
-        : `Falha ao autenticar: ${conta.erro}`,
+      status: statusConexao,
+      mensagem: mensagemConexao,
       esperado: 'HTTP 200 do endpoint /users/me',
     });
   } else {
@@ -132,6 +147,7 @@ async function consultarConta(accessToken) {
       return {
         ok: false,
         erro: `HTTP ${respostaUsuario.status} ${corpo.slice(0, 160)}`,
+        rede: false,
       };
     }
 
@@ -147,7 +163,8 @@ async function consultarConta(accessToken) {
       meios_de_pagamento: Array.isArray(meios) ? meios.length : 0,
     };
   } catch (e) {
-    return { ok: false, erro: e?.message || 'falha de rede' };
+    // fetch que lança exceção = ambiente sem saída de rede (nao é credencial ruim).
+    return { ok: false, erro: e?.message || 'falha de rede', rede: true };
   }
 }
 
@@ -162,6 +179,9 @@ function proximosPassos(config) {
   if (config.simulacao) {
     passos.push('Enquanto estiver em MODO SIMULACAO, os pedidos são fictícios e aparecem marcados como simulado na confirmacao.');
   }
+  passos.push(
+    'Valide tudo fora do navegador com "npm run testar:mp": autentica, lista meios de pagamento, tokeniza cartao de teste, cria uma ordem real e reconsulta o status.',
+  );
   passos.push('Cadastre compradores de teste (Contas de teste) e use os cartões de teste do Mercado Pago para aprovar/recusar pagamentos.');
   passos.push('Configure a URL de notificacao do webhook: https://SEU-DOMINIO/api/webhook');
   return passos;

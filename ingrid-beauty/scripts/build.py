@@ -64,14 +64,9 @@ PROCEDIMENTOS = [
 
 # imagens geradas (pastas) — nome do arquivo dentro de img/
 FONTES = {
-    "manrope-400": "manrope-latin-400-normal.woff2",
-    "manrope-500": "manrope-latin-500-normal.woff2",
-    "manrope-600": "manrope-latin-600-normal.woff2",
-    "manrope-700": "manrope-latin-700-normal.woff2",
-    "cormorant-400": "cormorant-garamond-latin-400-normal.woff2",
-    "cormorant-500": "cormorant-garamond-latin-500-normal.woff2",
-    "cormorant-600": "cormorant-garamond-latin-600-normal.woff2",
-    "cormorant-400-italic": "cormorant-garamond-latin-400-italic.woff2",
+    "manrope": "manrope-latin-wght-normal.woff2",
+    "cormorant": "cormorant-garamond-latin-wght-normal.woff2",
+    "cormorant-italic": "cormorant-garamond-latin-wght-italic.woff2",
 }
 
 IMAGENS = {
@@ -108,15 +103,16 @@ MENSAGENS = {
 
 
 def otimizar_servicos() -> None:
-    """Reduz as imagens de servico (900px, q76) para o site ficar leve."""
-    for proc in PROCEDIMENTOS:
-        caminho = IMG / proc["img"]
+    """Reduz as imagens de servico (640px, q72) para o site ficar leve no celular."""
+    arquivos = [p["img"] for p in PROCEDIMENTOS] + ["servico-linhas.jpg"]
+    for nome in arquivos:
+        caminho = IMG / nome
         if not caminho.exists():
             continue
         im = Image.open(caminho).convert("RGB")
-        if im.width > 900:
-            im = im.resize((900, round(im.height * 900 / im.width)), Image.LANCZOS)
-        im.save(caminho, "JPEG", quality=76, optimize=True, progressive=True)
+        if im.width > 640:
+            im = im.resize((640, round(im.height * 640 / im.width)), Image.LANCZOS)
+        im.save(caminho, "JPEG", quality=72, optimize=True, progressive=True)
 
 
 def data_uri(caminho: Path) -> str:
@@ -180,14 +176,21 @@ def construir(modo: str) -> str:
         linhas.append(f"  --img-{chave}:{valor};")
     html = html.replace("{{IMGS_VARS}}", "\n".join(linhas))
 
-    # --- fontes (embutidas nos dois modos) ---
+    # --- fontes: base64 no arquivo unico / arquivos separados na versao com pasta ---
+    preloads = []
     for token_nome, arquivo in FONTES.items():
         token = "{{FONT:" + token_nome + "}}"
         fonte = BASE / "fonts" / arquivo
         if token not in html:
             continue
-        payload = base64.b64encode(fonte.read_bytes()).decode("ascii")
-        html = html.replace(token, payload)
+        if modo == "single":
+            payload = base64.b64encode(fonte.read_bytes()).decode("ascii")
+            html = html.replace(token, "data:font/woff2;base64," + payload)
+        else:
+            html = html.replace(token, "fonts/" + arquivo)
+            preloads.append(
+                '<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/' + arquivo + '">')
+    html = html.replace("{{PRELOAD_FONTS}}", "\n".join(preloads))
 
     # --- favicon ---
     fav = data_uri(IMG / IMAGENS["favicon"]) if modo == "single" else f"img/{IMAGENS['favicon']}"
@@ -218,6 +221,9 @@ def main() -> None:
     if (pasta / "img").exists():
         shutil.rmtree(pasta / "img")
     shutil.copytree(IMG, pasta / "img")
+    if (pasta / "fonts").exists():
+        shutil.rmtree(pasta / "fonts")
+    shutil.copytree(BASE / "fonts", pasta / "fonts")
     (pasta / "index.html").write_text(construir("pasta"), encoding="utf-8")
 
     zip_path = BASE / "ingrid-beauty-versao-imagens.zip"

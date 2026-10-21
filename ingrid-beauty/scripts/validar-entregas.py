@@ -38,7 +38,8 @@ for nome in ("logo-ingrid-beauty.png", "logo-ingrid-beauty-com-frase.png", "favi
     corners = [alfa.getpixel((0, 0)), alfa.getpixel((im.width - 1, 0)),
                alfa.getpixel((0, im.height - 1)), alfa.getpixel((im.width - 1, im.height - 1))]
     transparentes = alfa.getextrema()[0] == 0
-    check(f"{nome} tem canal alfa real", im.mode in ("RGBA", "LA") and transparentes,
+    tem_alfa = im.mode in ("RGBA", "LA") or (im.mode == "P" and "transparency" in im.info)
+    check(f"{nome} tem canal alfa real", tem_alfa and transparentes,
           f"{im.size} {im.mode} cantos={corners}")
     check(f"{nome} sem fundo opaco", max(corners) == 0)
 

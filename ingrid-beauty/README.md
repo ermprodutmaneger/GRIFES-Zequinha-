@@ -1,21 +1,33 @@
 # Ingrid Beauty — site institucional + agenda (WhatsApp)
 
-## 🚀 Publicar no Netlify em 1 minuto (ZIP pronto)
-
-1. Baixe **`ingrid-beauty-netlify.zip`** (nesta pasta).
-2. No Netlify: **Add new site → Deploy manually** e arraste o arquivo `.zip` (ou descompacte e arraste a pasta).
-3. Pronto: o site já sobe com `index.html` na raiz, tudo embutido (imagens + fontes). Não precisa de pasta `img/`.
-4. Quando tiver o domínio: **Site configuration → Domain management** → adicione o domínio e, no `index.html`, troque
-   `https://ingrid-beauty.vercel.app` pelo domínio final (são 4 ocorrências: `og:url`, `og:image`, `twitter:image` e `canonical`).
-   O próprio site já ajusta essas metas para o domínio atual quando o navegador executa o JavaScript — mas o ideal é
-   salvar o `index.html` com o domínio definitivo para o link de compartilhamento (WhatsApp/Facebook) sair correto.
+> **Site estático, em português, otimizado para celular.**
+> Catálogo com 9 procedimentos, agenda com total em centavos, escolha de dia/período/horário
+> dentro dos horários reais, envio da solicitação pelo WhatsApp e pagamento via Pix.
 
 ---
 
-Site único, estático, em português do Brasil, para a **Ingrid Beauty** (Ingrid Ferreira).
-Identidade visual premium (marrom profundo, creme, dourado), tipografia Cormorant Garamond + Manrope,
-carregamento inicial animado, catálogo com 9 procedimentos, agenda de procedimentos com total em centavos,
-escolha de dia/período/horário dentro dos horários reais e envio da solicitação pelo WhatsApp.
+## 🚀 Publicar em 2 minutos (Netlify)
+
+1. Baixe o arquivo **`ingrid-beauty-site-completo.zip`** (1,54 MB).
+2. No Netlify: **Add new site → Deploy manually** e arraste o `.zip` (ou descompacte e arraste a pasta).
+3. Pronto. O site sobe com HTTPS e subdomain do Netlify — sem GitHub, sem build, sem configuração.
+4. Quando tiver o domínio: **Site configuration → Domain management → Add a domain**.
+
+## 🚀 Publicar no GitHub (repositório novo, do jeito certo)
+
+> Este site **não** precisa ficar no repositório da loja. Crie um repositório **novo** só para ele:
+
+1. No GitHub: **New repository** → nome `ingrid-beauty` → **Create repository** (sem README, sem .gitignore).
+2. **Add file → Upload files** → arraste os arquivos **que estão dentro** do ZIP
+   (`index.html`, `pastas img/ e fonts/`, `og.jpg`, `favicon.png`, `netlify.toml`).
+3. **Commit changes**.
+4. No Netlify: **Add new → Import** esse repositório → **Root Directory: `/`** → Framework: **Other** → **Deploy**.
+   (Ou no GitHub: botão **Netlify** no topo do repositório, se já estiver conectado.)
+
+**O que já está configurado:** `netlify.toml` com cache longo para `/img` e `/fonts`, e o site
+ajusta sozinho `og:url`, `og:image` e `canonical` para o domínio em que for publicado.
+Para o link de compartilhamento (WhatsApp/Facebook) sair 100% correto, salve o `index.html`
+trocando `https://ingrid-beauty.vercel.app` pelo domínio final (4 ocorrências no arquivo).
 
 ---
 
@@ -23,7 +35,8 @@ escolha de dia/período/horário dentro dos horários reais e envio da solicita�
 
 | Arquivo | Para que serve |
 | --- | --- |
-| `index.html` | **Site completo em arquivo único** (HTML + CSS + JS + imagens em base64 + fontes embutidas). 1,64 MB. É este que vai para a raiz do site. |
+| `index.html` | **Site completo em arquivo único** (HTML + CSS + JS + imagens em base64 + fontes embutidas). 0,96 MB. Backup/alternativa. |
+| `ingrid-beauty-site-completo.zip` | **PACOTE PRINCIPAL** — site otimizado com `index.html` na raiz + `img/` + `fonts/` + `og.jpg` + `favicon.png` + `netlify.toml`. É este que se arrasta para o Netlify. |
 | `logo-ingrid-beauty.png` | Logo só com o nome, fundo transparente (canal alfa real), 640 px de largura. |
 | `logo-ingrid-beauty-com-frase.png` | Logo com o nome **e** a frase “Há treze anos, fazendo o simples ficar extraordinário”, fundo transparente. |
 | `favicon.png` | Favicon 128×128 — inicial “I” isolada da própria marca (sem símbolo inventado). |
@@ -35,8 +48,19 @@ escolha de dia/período/horário dentro dos horários reais e envio da solicita�
 | `scripts/` | Scripts de build (opcional, só para manutenção futura). |
 
 ### Pastas para publicar
-- **Publicação simples:** envie `index.html` + `og.jpg` + `favicon.png` (o site funciona sozinho, sem outras pastas).
-- **Publicação com a pasta `img/`:** use `versao-imagens/` (envie a pasta inteira).
+- **Recomendado (Netlify/GitHub):** `ingrid-beauty-site-completo.zip` → descompacte e publique a pasta (ou arraste o zip direto no Netlify).
+- **Alternativa (um arquivo só):** `index.html` + `og.jpg` + `favicon.png` — funciona sozinho, sem outras pastas.
+
+### Otimização para celular (o que foi feito)
+| Item | Antes | Depois |
+| --- | --- | --- |
+| HTML (versão com pasta) | 318 KB | **125 KB** (fontes em arquivos paralelos) |
+| Site em arquivo único | 1,81 MB | **0,96 MB** |
+| Logos (PNG) | 165 KB cada | **40 KB** (quantizados, visual idêntico) |
+| Imagens dos serviços | 900 px / 76 | **640 px / 72** (18–37 KB cada) |
+| Fontes | 8 arquivos estáticos | **3 arquivos variáveis** (101 KB, 3 requisições) |
+| Carregamento | todas as imagens de uma vez | **progressivo** (só o que está perto da tela) |
+| Teste em 390 px | — | FCP **80 ms**, 8 requisições, 0 erros, sem rolagem horizontal |
 
 ---
 

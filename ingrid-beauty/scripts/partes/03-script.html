@@ -570,8 +570,27 @@
     } catch (e) { /* sem permissao: mantem as metas originais */ }
   }
 
+  function iniciarImagensLazy() {
+    /* so busca/decodifica as imagens quando elas se aproximam da tela */
+    var criticas = $$('.brand-logo, .hero-logo, .hero-foto-img, .loader-logo, .footer-logo, .contato-cta-logo, .wa-avatar .img');
+    criticas.forEach(function (el) { el.classList.add('pronto'); });
+    var restantes = $$('.img').filter(function (el) { return !el.classList.contains('pronto'); });
+    if (!restantes.length) return;
+    if (!('IntersectionObserver' in window)) {
+      restantes.forEach(function (el) { el.classList.add('pronto'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('pronto'); obs.unobserve(e.target); }
+      });
+    }, { rootMargin: '500px 0px' });
+    restantes.forEach(function (el) { obs.observe(el); });
+  }
+
   function iniciar() {
     ajustarUrlPublica();
+    iniciarImagensLazy();
     iniciarLoader();
     iniciarRevelacoes();
     iniciarDestaques();

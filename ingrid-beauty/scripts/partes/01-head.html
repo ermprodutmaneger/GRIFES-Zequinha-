@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="Ingrid Beauty — Sobrancelhas e cuidados estéticos">
 <meta name="twitter:description" content="Design de sobrancelhas, Brow Lamination, micropigmentação Shadow e cuidados faciais. Agende pelo WhatsApp.">
 <meta name="twitter:image" content="{{SITE_URL}}/og.jpg">
-<link rel="icon" type="image/png" href="{{IMG:favicon}}">
+{{PRELOAD_FONTS}}<link rel="icon" type="image/png" href="{{IMG:favicon}}">
 <link rel="apple-touch-icon" href="{{IMG:favicon}}">
 <script type="application/ld+json">
 {
@@ -59,19 +59,18 @@
   ]
 }
 </script>
-<noscript><style>.loader{display:none!important}.wa-float,.barra-mobile{display:none!important}</style></noscript>
+<noscript><style>
+  .loader{display:none!important}
+  .wa-float,.barra-mobile{display:none!important}
+  .img{background-image:var(--img)!important}
+</style></noscript>
 <style>
 /* ============================================================
    INGRID BEAUTY — fontes
    ============================================================ */
-@font-face{font-family:'Manrope';src:url(data:font/woff2;base64,{{FONT:manrope-400}}) format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Manrope';src:url(data:font/woff2;base64,{{FONT:manrope-500}}) format('woff2');font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:'Manrope';src:url(data:font/woff2;base64,{{FONT:manrope-600}}) format('woff2');font-weight:600;font-style:normal;font-display:swap}
-@font-face{font-family:'Manrope';src:url(data:font/woff2;base64,{{FONT:manrope-700}}) format('woff2');font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:'Cormorant Garamond';src:url(data:font/woff2;base64,{{FONT:cormorant-400}}) format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Cormorant Garamond';src:url(data:font/woff2;base64,{{FONT:cormorant-500}}) format('woff2');font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:'Cormorant Garamond';src:url(data:font/woff2;base64,{{FONT:cormorant-600}}) format('woff2');font-weight:600;font-style:normal;font-display:swap}
-@font-face{font-family:'Cormorant Garamond';src:url(data:font/woff2;base64,{{FONT:cormorant-400-italic}}) format('woff2');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'Manrope';src:url({{FONT:manrope}}) format('woff2');font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url({{FONT:cormorant}}) format('woff2');font-weight:300 700;font-style:normal;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url({{FONT:cormorant-italic}}) format('woff2');font-weight:300 700;font-style:italic;font-display:swap}
 
 /* ============================================================
    Tokens
@@ -116,7 +115,8 @@ body{
 body.locked{overflow:hidden}
 body.com-barra{padding-bottom:92px}
 img{max-width:100%;display:block}
-.img{display:block;background-image:var(--img);background-repeat:no-repeat;background-position:center;background-size:contain}
+.img{display:block;background-image:none;background-repeat:no-repeat;background-position:center;background-size:contain}
+.img.pronto{background-image:var(--img)}
 .img.cover{background-size:cover}
 a{color:inherit;text-decoration:none}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -135,7 +135,8 @@ ul{margin:0;padding:0;list-style:none}
 @media(min-width:768px){.wrap{width:min(100% - 4rem,var(--maxw))}}
 
 /* seções */
-section{position:relative}
+section{position:relative;content-visibility:auto;contain-intrinsic-size:auto 720px}
+.hero{content-visibility:visible;contain-intrinsic-size:none}
 .section{padding:clamp(4rem,9vw,7.5rem) 0}
 .section-head{max-width:760px;margin-bottom:clamp(2.2rem,4vw,3.4rem)}
 .eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}

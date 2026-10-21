@@ -1,0 +1,785 @@
+<script>
+/* ============================================================
+   INGRID BEAUTY — comportamento do site
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ---------------- dados ---------------- */
+  var PROCEDIMENTOS = {{DADOS}};
+
+  var WHATSAPP_NUMERO = '5511916121318';
+  var PIX_CHAVE = '11916121318';
+  var CHAVE_AGENDA = 'ingrid-beauty-agenda-v1';
+  var CHAVE_LOADER = 'ingrid-beauty-loader-v1';
+  var CHAVE_BALAO = 'ingrid-beauty-balao-v1';
+
+  var mover = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var semMovimento = function () { return mover.matches; };
+
+  var $ = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ---------------- utilidades ---------------- */
+  function storageLeitura(chave) {
+    try { return window.localStorage.getItem(chave); } catch (e) { return null; }
+  }
+  function storageEscrita(chave, valor) {
+    try { window.localStorage.setItem(chave, valor); return true; } catch (e) { return false; }
+  }
+  function storageRemove(chave) {
+    try { window.localStorage.removeItem(chave); } catch (e) { /* segue sem persistencia */ }
+  }
+  function brl(centavos) {
+    var v = (centavos / 100).toFixed(2);
+    var partes = v.split('.');
+    partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return 'R$ ' + partes.join(',');
+  }
+  function esc(txt) {
+    return String(txt).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function porId(id) {
+    for (var i = 0; i < PROCEDIMENTOS.length; i++) {
+      if (PROCEDIMENTOS[i].id === id) return PROCEDIMENTOS[i];
+    }
+    return null;
+  }
+  function linkWa(mensagem) {
+    return 'https://wa.me/' + WHATSAPP_NUMERO + '?text=' + encodeURIComponent(mensagem);
+  }
+  function abrirLinkWa(mensagem) {
+    var a = document.createElement('a');
+    a.href = linkWa(mensagem);
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); }, 1200);
+  }
+  function horaMin(h) {
+    var p = h.split(':');
+    return (parseInt(p[0], 10) * 60) + parseInt(p[1], 10);
+  }
+  function minHora(m) {
+    var h = Math.floor(m / 60), mm = m % 60;
+    return (h < 10 ? '0' + h : h) + 'h' + (mm ? (mm < 10 ? '0' + mm : mm) : '');
+  }
+  function dataBr(iso) {
+    if (!iso) return '';
+    var p = iso.split('-');
+    if (p.length !== 3) return iso;
+    return p[2] + '/' + p[1] + '/' + p[0];
+  }
+  var DIAS = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+
+  /* ---------------- loader ---------------- */
+  function iniciarLoader() {
+    var loader = document.getElementById('loader');
+    if (!loader) return;
+    var jaViu = storageLeitura(CHAVE_LOADER) === '1';
+    var remover = function () {
+      if (loader.classList.contains('done')) return;
+      loader.classList.add('done');
+      storageEscrita(CHAVE_LOADER, '1');
+      setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 900);
+    };
+    if (jaViu || semMovimento()) { remover(); return; }
+    setTimeout(remover, 1500);
+    setTimeout(remover, 4500); /* rede de seguranca: nunca bloquear a pagina */
+  }
+
+  /* ---------------- revelacoes ---------------- */
+  function iniciarRevelacoes() {
+    var itens = $$('[data-reveal]');
+    if (!('IntersectionObserver' in window) || semMovimento()) {
+      itens.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    itens.forEach(function (el) { obs.observe(el); });
+  }
+
+  /* ---------------- destaque do texto na rolagem ---------------- */
+  function iniciarDestaques() {
+    var alvos = $$('.hl');
+    if (!alvos.length) return;
+    if (!('IntersectionObserver' in window) || semMovimento()) {
+      alvos.forEach(function (el) { el.classList.add('on'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.6 });
+    alvos.forEach(function (el) { obs.observe(el); });
+  }
+
+  /* ---------------- header + parallax ---------------- */
+  function iniciarHeader() {
+    var header = $('.site-header');
+    var foto = $('#hero-foto');
+    var ticking = false;
+    function atualizar() {
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      if (header) header.classList.toggle('scrolled', y > 12);
+      if (foto && !semMovimento() && window.innerWidth > 760) {
+        foto.style.transform = 'translate3d(0,' + Math.min(y * 0.06, 42) + 'px,0)';
+      }
+      ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { window.requestAnimationFrame(atualizar); ticking = true; }
+    }, { passive: true });
+    atualizar();
+  }
+
+  /* ---------------- menu mobile ---------------- */
+  var menu = null, botaoMenu = null, menuAberto = false;
+  function abrirMenu() {
+    if (!menu) return;
+    menu.hidden = false;
+    document.body.classList.add('locked');
+    window.requestAnimationFrame(function () { menu.classList.add('open'); });
+    if (botaoMenu) botaoMenu.setAttribute('aria-expanded', 'true');
+    menuAberto = true;
+    var primeiro = $('a, button', menu);
+    if (primeiro) setTimeout(function () { primeiro.focus(); }, 120);
+  }
+  function fecharMenu(devolverFoco) {
+    if (!menu || !menuAberto) return;
+    menu.classList.remove('open');
+    if (botaoMenu) botaoMenu.setAttribute('aria-expanded', 'false');
+    menuAberto = false;
+    document.body.classList.remove('locked');
+    setTimeout(function () { if (!menuAberto) menu.hidden = true; }, 850);
+    if (devolverFoco !== false && botaoMenu) botaoMenu.focus();
+  }
+  function iniciarMenu() {
+    menu = $('#menu-mobile');
+    botaoMenu = $('#btn-menu');
+    if (!menu || !botaoMenu) return;
+    botaoMenu.addEventListener('click', function () { menuAberto ? fecharMenu() : abrirMenu(); });
+    var fechar = $('#btn-menu-close');
+    if (fechar) fechar.addEventListener('click', function () { fecharMenu(); });
+    $$('a', menu).forEach(function (a) {
+      a.addEventListener('click', function () { setTimeout(function () { fecharMenu(false); }, 260); });
+    });
+  }
+
+  /* ---------------- foco preso (modais) ---------------- */
+  var FOCAVEIS = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  function prenderFoco(container, evento) {
+    var itens = $$(FOCAVEIS, container).filter(function (el) { return el.offsetParent !== null; });
+    if (!itens.length) return;
+    var primeiro = itens[0], ultimo = itens[itens.length - 1];
+    if (evento.shiftKey && document.activeElement === primeiro) { evento.preventDefault(); ultimo.focus(); }
+    else if (!evento.shiftKey && document.activeElement === ultimo) { evento.preventDefault(); primeiro.focus(); }
+  }
+
+  /* ---------------- toast ---------------- */
+  var toastTimer = null;
+  function toast(mensagem) {
+    var el = $('#toast'), txt = $('#toast-texto');
+    if (!el) return;
+    txt.textContent = mensagem;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2800);
+  }
+
+  /* ---------------- agenda (drawer) ---------------- */
+  var estado = { itens: [], nome: '', data: '', periodo: '', hora: '', obs: '' };
+
+  function salvarAgenda() {
+    storageEscrita(CHAVE_AGENDA, JSON.stringify(estado));
+  }
+  function carregarAgenda() {
+    var bruto = storageLeitura(CHAVE_AGENDA);
+    if (!bruto) return;
+    try {
+      var d = JSON.parse(bruto);
+      if (!d || !d.itens) return;
+      estado.itens = d.itens.filter(function (id) { return !!porId(id); });
+      estado.nome = d.nome || '';
+      estado.data = d.data || '';
+      estado.periodo = d.periodo || '';
+      estado.hora = d.hora || '';
+      estado.obs = d.obs || '';
+    } catch (e) { /* dados invalidos: segue vazio */ }
+  }
+
+  function calcularTotais() {
+    var total = 0, temAvaliacao = false, desconhecidos = 0;
+    estado.itens.forEach(function (id) {
+      var p = porId(id);
+      if (!p) return;
+      if (p.preco === null) {
+        if (p.id === 'avaliacao') temAvaliacao = true; else desconhecidos++;
+      } else {
+        total += p.preco;
+      }
+    });
+    var soAvaliacao = estado.itens.length > 0 && estado.itens.every(function (id) { return id === 'avaliacao'; });
+    return {
+      total: total,
+      temAvaliacao: temAvaliacao,
+      desconhecidos: desconhecidos,
+      soAvaliacao: soAvaliacao,
+      somenteAvaliacao: soAvaliacao
+    };
+  }
+
+  function textoTotal() {
+    var t = calcularTotais();
+    if (!estado.itens.length) return 'R$ 0,00';
+    if (t.soAvaliacao) return 'Total a consultar';
+    if (t.total > 0) return brl(t.total);
+    return 'Total a consultar';
+  }
+
+  function renderAgenda() {
+    var lista = $('#lista-agenda');
+    var caixa = $('#caixa-total');
+    var totalEl = $('#total-valor');
+    var avalEl = $('#total-avaliacao');
+    if (!lista) return;
+
+    if (!estado.itens.length) {
+      lista.innerHTML = '<p class="agenda-vazio">Sua agenda está vazia.<br>Escolha um procedimento no catálogo para começar.</p>';
+    } else {
+      lista.innerHTML = estado.itens.map(function (id) {
+        var p = porId(id);
+        if (!p) return '';
+        return '<div class="agenda-item" data-id="' + p.id + '">' +
+          '<span class="img cover" style="--img:var(--img-svc-' + p.id + ')" role="img" aria-label="' + esc(p.nome) + '"></span>' +
+          '<div class="agenda-item-info"><strong>' + esc(p.nome) + '</strong>' +
+          '<span>' + (p.preco === null ? 'A consultar' : brl(p.preco)) + ' · ' + esc(p.duracaoTexto) + '</span></div>' +
+          '<button class="agenda-item-remove" type="button" data-remover="' + p.id + '" aria-label="Remover ' + esc(p.nome) + ' da agenda">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
+          '</div>';
+      }).join('');
+    }
+
+    var t = calcularTotais();
+    if (caixa) {
+      if (estado.itens.length) {
+        caixa.hidden = false;
+        if (totalEl) totalEl.textContent = textoTotal();
+        if (avalEl) {
+          avalEl.hidden = !t.temAvaliacao;
+          avalEl.textContent = '+ avaliação com valor a confirmar';
+        }
+      } else {
+        caixa.hidden = true;
+      }
+    }
+
+    $$('[data-remover]', lista).forEach(function (btn) {
+      btn.addEventListener('click', function () { removerItem(btn.getAttribute('data-remover')); });
+    });
+
+    atualizarContadores();
+    atualizarBotaoAdicionar();
+  }
+
+  function atualizarContadores() {
+    var n = estado.itens.length;
+    var topo = $('#contador-topo');
+    if (topo) {
+      topo.textContent = String(n);
+      topo.hidden = n === 0;
+    }
+    var barra = $('#barra-mobile');
+    var contagem = $('#barra-contagem');
+    var total = $('#barra-total');
+    if (contagem) contagem.textContent = n === 1 ? '1 procedimento' : n + ' procedimentos';
+    if (total) total.textContent = textoTotal();
+    if (barra) barra.classList.toggle('show', n > 0);
+    document.body.classList.toggle('com-barra', n > 0);
+    var sub = $('#subtitulo-agenda');
+    if (sub) sub.textContent = n ? n + ' procedimento' + (n > 1 ? 's' : '') + ' selecionado' + (n > 1 ? 's' : '') : 'Escolha os procedimentos e envie sua solicitação.';
+  }
+
+  function atualizarBotaoAdicionar() {
+    $$('.card').forEach(function (card) {
+      var id = card.getAttribute('data-id');
+      var btn = $('[data-add]', card);
+      if (!btn) return;
+      var dentro = estado.itens.indexOf(id) !== -1;
+      card.classList.toggle('added', dentro);
+      btn.textContent = dentro ? 'Adicionado ✓' : 'Adicionar à agenda';
+    });
+  }
+
+  function voarParaAgenda(origem) {
+    if (!origem || semMovimento()) return;
+    var destino = $('#btn-agenda-topo');
+    if (!destino) return;
+    var rect = origem.getBoundingClientRect();
+    var alvo = destino.getBoundingClientRect();
+    var ghost = document.createElement('span');
+    ghost.className = 'fly-ghost img cover';
+    ghost.setAttribute('aria-hidden', 'true');
+    ghost.style.setProperty('--img', origem.style.getPropertyValue('--img') || '');
+    var tamanho = Math.min(rect.width, 120);
+    ghost.style.width = tamanho + 'px';
+    ghost.style.height = tamanho + 'px';
+    ghost.style.backgroundSize = 'cover';
+    ghost.style.left = rect.left + 'px';
+    ghost.style.top = rect.top + 'px';
+    document.body.appendChild(ghost);
+    if (!ghost.animate) { setTimeout(function () { ghost.remove(); }, 700); return; }
+    var anim = ghost.animate([
+      { transform: 'translate(0,0) scale(1)', opacity: 1 },
+      { transform: 'translate(' + (alvo.left + alvo.width / 2 - rect.left - tamanho / 2) + 'px,' + (alvo.top + alvo.height / 2 - rect.top - tamanho / 2) + 'px) scale(0.2)', opacity: 0.35 }
+    ], { duration: 780, easing: 'cubic-bezier(.16,1,.3,1)' });
+    anim.onfinish = function () { ghost.remove(); };
+  }
+
+  function adicionarItem(id, origem) {
+    var p = porId(id);
+    if (!p) return;
+    if (estado.itens.indexOf(id) !== -1) {
+      toast('Esse procedimento já está na sua agenda.');
+      return;
+    }
+    estado.itens.push(id);
+    salvarAgenda();
+    renderAgenda();
+    if (origem) voarParaAgenda(origem);
+    var contador = $('#contador-topo');
+    if (contador) { contador.classList.remove('pop'); void contador.offsetWidth; contador.classList.add('pop'); }
+    toast(p.nome + ' adicionado à sua agenda.');
+  }
+
+  function removerItem(id) {
+    var p = porId(id);
+    estado.itens = estado.itens.filter(function (x) { return x !== id; });
+    salvarAgenda();
+    renderAgenda();
+    if (p) toast(p.nome + ' removido da agenda.');
+  }
+
+  /* ---------------- horarios ---------------- */
+  var HORARIOS = {
+    1: [{ inicio: '14:00', fim: '17:00' }],
+    2: [{ inicio: '09:00', fim: '11:30' }, { inicio: '13:30', fim: '17:30' }],
+    3: [{ inicio: '09:30', fim: '11:30' }, { inicio: '13:30', fim: '17:00' }],
+    4: [{ inicio: '09:30', fim: '11:30' }, { inicio: '13:30', fim: '14:30' }, { inicio: '16:30', fim: '17:30' }],
+    5: [{ inicio: '09:00', fim: '11:30' }, { inicio: '13:30', fim: '17:30' }],
+    6: [{ inicio: '08:30', fim: '16:00' }]
+  };
+
+  function hojeSaoPaulo() {
+    var partes = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).format(new Date()).split('-');
+    return { ano: +partes[0], mes: +partes[1], dia: +partes[2] };
+  }
+  function diaSemana(ano, mes, dia) {
+    return new Date(Date.UTC(ano, mes - 1, dia)).getUTCDay();
+  }
+  function duracaoTotalMin() {
+    var t = 0;
+    estado.itens.forEach(function (id) { var p = porId(id); if (p) t += p.duracaoMin; });
+    return t;
+  }
+  function periodosDoDia(semana) {
+    return (HORARIOS[semana] || []).map(function (f) {
+      return { inicio: f.inicio, fim: f.fim, periodo: horaMin(f.inicio) < 720 ? 'manhã' : 'tarde' };
+    });
+  }
+  function montarHorarios() {
+    var selectHora = $('#campo-hora');
+    var selectPeriodo = $('#campo-periodo');
+    var dica = $('#dica-horario');
+    if (!selectHora) return;
+    var hoje = hojeSaoPaulo();
+    var min = hoje.ano + '-' + (hoje.mes < 10 ? '0' + hoje.mes : hoje.mes) + '-' + (hoje.dia < 10 ? '0' + hoje.dia : hoje.dia);
+    var campoData = $('#campo-data');
+    if (campoData && !campoData.min) campoData.min = min;
+
+    if (!estado.data) {
+      selectHora.innerHTML = '<option value="">Escolha o dia primeiro</option>';
+      selectHora.disabled = true;
+      return;
+    }
+    var p = estado.data.split('-');
+    var semana = diaSemana(+p[0], +p[1], +p[2]);
+    var faixas = periodosDoDia(semana);
+    var periodoSel = estado.periodo;
+    var filtradas = faixas.filter(function (f) { return !periodoSel || f.periodo === periodoSel; });
+    var duracao = duracaoTotalMin() || 30;
+    var opcoes = [];
+    filtradas.forEach(function (f) {
+      var ini = horaMin(f.inicio), fim = horaMin(f.fim);
+      for (var m = ini; m + duracao <= fim; m += 30) {
+        opcoes.push({ valor: minHora(m), rotulo: minHora(m) + ' às ' + minHora(m + duracao) + ' · ' + f.periodo });
+      }
+    });
+    if (!opcoes.length) {
+      selectHora.innerHTML = '<option value="">Sem horários para essa preferência</option>';
+      selectHora.disabled = true;
+      if (dica) dica.textContent = 'Não há horário livre para essa combinação de dia, período e duração. Escolha outro dia ou consulte a Ingrid.';
+      return;
+    }
+    selectHora.disabled = false;
+    selectHora.innerHTML = '<option value="">A combinar</option>' + opcoes.map(function (o) {
+      return '<option value="' + o.valor + '">' + o.rotulo + '</option>';
+    }).join('');
+    if (estado.hora) {
+      var existe = opcoes.some(function (o) { return o.valor === estado.hora; });
+      selectHora.value = existe ? estado.hora : '';
+    }
+    if (dica) {
+      var resumo = faixas.map(function (f) { return f.inicio.replace(':', 'h') + ' às ' + f.fim.replace(':', 'h'); }).join(' e ');
+      dica.textContent = 'Atendimento em ' + DIAS[semana] + ': ' + resumo + '. O horário é uma preferência e está sujeito à confirmação da Ingrid.';
+    }
+  }
+  /* ---------------- modal de procedimento ---------------- */
+  var modal = null, modalAtual = null, ultimoFoco = null;
+  function abrirModal(id) {
+    var p = porId(id);
+    if (!p || !modal) return;
+    modalAtual = p;
+    ultimoFoco = document.activeElement;
+    var modalImg = $('#modal-img');
+    if (modalImg) {
+      modalImg.style.setProperty('--img', 'var(--img-svc-' + p.id + ')');
+      modalImg.setAttribute('aria-label', 'Imagem ilustrativa de ' + p.nome);
+    }
+    $('#modal-cat').textContent = p.catLabel;
+    $('#modal-titulo').textContent = p.nome;
+    $('#modal-desc').textContent = p.descricao;
+    $('#modal-duracao').textContent = p.duracaoTexto;
+    $('#modal-preco').textContent = p.preco === null ? 'A consultar' : brl(p.preco);
+    modal.hidden = false;
+    document.body.classList.add('locked');
+    window.requestAnimationFrame(function () { modal.classList.add('open'); });
+    setTimeout(function () { var b = $('#fechar-modal'); if (b) b.focus(); }, 120);
+  }
+  function fecharModal() {
+    if (!modal || !modal.classList.contains('open')) return;
+    modal.classList.remove('open');
+    document.body.classList.remove('locked');
+    setTimeout(function () { if (!modal.classList.contains('open')) modal.hidden = true; }, 480);
+    if (ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+
+  /* ---------------- lightbox ---------------- */
+  var lightbox = null;
+  function abrirLightbox() {
+    if (!lightbox) return;
+    ultimoFoco = document.activeElement;
+    lightbox.hidden = false;
+    document.body.classList.add('locked');
+    window.requestAnimationFrame(function () { lightbox.classList.add('open'); });
+    setTimeout(function () { var b = $('#fechar-lightbox'); if (b) b.focus(); }, 120);
+  }
+  function fecharLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('open');
+    document.body.classList.remove('locked');
+    setTimeout(function () { lightbox.hidden = true; }, 500);
+    if (ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+
+  /* ---------------- drawer ---------------- */
+  var drawer = null, overlay = null;
+  function abrirDrawer() {
+    if (!drawer) return;
+    drawer.hidden = false;
+    if (overlay) { overlay.hidden = false; window.requestAnimationFrame(function () { overlay.classList.add('open'); }); }
+    document.body.classList.add('locked');
+    window.requestAnimationFrame(function () { drawer.classList.add('open'); });
+    var btn = $('#btn-agenda-topo');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    setTimeout(function () { var c = $('#fechar-agenda'); if (c) c.focus(); }, 140);
+  }
+  function fecharDrawer() {
+    if (!drawer || !drawer.classList.contains('open')) return;
+    drawer.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+    document.body.classList.remove('locked');
+    var btn = $('#btn-agenda-topo');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    setTimeout(function () {
+      if (!drawer.classList.contains('open')) {
+        drawer.hidden = true;
+        if (overlay) overlay.hidden = true;
+      }
+    }, 700);
+    if (ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+
+  /* ---------------- mensagem do whatsapp ---------------- */
+  function montarMensagem() {
+    var t = calcularTotais();
+    var linhas = estado.itens.map(function (id) {
+      var p = porId(id);
+      if (!p) return '';
+      return '• ' + p.nome + ' — ' + (p.preco === null ? 'a consultar' : brl(p.preco));
+    }).filter(Boolean).join('\n');
+
+    var dia = estado.data ? dataBr(estado.data) : 'a combinar';
+    var periodo = estado.periodo ? estado.periodo : 'a combinar';
+    var nome = estado.nome ? estado.nome : 'a confirmar';
+    var total = t.soAvaliacao ? 'a consultar' : (t.total > 0 ? brl(t.total) : 'a consultar');
+
+    var msg = 'Olá, Ingrid! Vim pelo site da Ingrid Beauty e gostaria de solicitar um agendamento:\n\n' +
+      'Procedimentos:\n' + linhas + '\n\n' +
+      'Dia preferido: ' + dia + '\n' +
+      'Período: ' + periodo + '\n';
+    if (estado.hora) msg += 'Horário de preferência: ' + estado.hora + '\n';
+    msg += 'Nome: ' + nome + '\n';
+    if (estado.obs) msg += 'Observação: ' + estado.obs + '\n';
+    msg += '\nTotal estimado: ' + total;
+    if (t.temAvaliacao) msg += '\nAvaliação: valor a confirmar.';
+    if (t.desconhecidos > 0) msg += '\nOutros valores: a confirmar.';
+    msg += '\n\nPode me confirmar a disponibilidade?';
+    return msg;
+  }
+
+  /* ---------------- inicializacao ---------------- */
+  function iniciar() {
+    iniciarLoader();
+    iniciarRevelacoes();
+    iniciarDestaques();
+    iniciarHeader();
+    iniciarMenu();
+    carregarAgenda();
+
+    /* ano automatico */
+    var ano = $('#ano-atual');
+    if (ano) ano.textContent = String(new Date().getFullYear());
+
+    /* hero */
+    var heroFoto = $('#hero-foto');
+    if (heroFoto) setTimeout(function () { heroFoto.classList.add('in'); }, 180);
+
+    /* filtros */
+    $$('.filter').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var alvo = btn.getAttribute('data-filter');
+        $$('.filter').forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+        $$('.card').forEach(function (card) {
+          var cat = card.getAttribute('data-categoria');
+          var mostrar = alvo === 'todos' || cat === alvo;
+          card.classList.toggle('hidden', !mostrar);
+        });
+      });
+    });
+
+    /* cards: detalhes + adicionar */
+    $$('.card').forEach(function (card) {
+      var id = card.getAttribute('data-id');
+      var btnDetalhes = $('[data-detalhes]', card);
+      var btnAdd = $('[data-add]', card);
+      if (btnDetalhes) btnDetalhes.addEventListener('click', function () { abrirModal(id); });
+      if (btnAdd) btnAdd.addEventListener('click', function () {
+        var img = $('.card-media .img', card);
+        adicionarItem(id, img);
+      });
+    });
+
+    /* modal */
+    modal = $('#modal-procedimento');
+    var fecharModalBtn = $('#fechar-modal');
+    if (fecharModalBtn) fecharModalBtn.addEventListener('click', fecharModal);
+    if (modal) {
+      modal.addEventListener('click', function (e) { if (e.target === modal) fecharModal(); });
+      var btnAgendar = $('#modal-agendar');
+      if (btnAgendar) btnAgendar.addEventListener('click', function () {
+        if (!modalAtual) return;
+        adicionarItem(modalAtual.id);
+        fecharModal();
+        abrirDrawer();
+      });
+      var btnAddModal = $('#modal-adicionar');
+      if (btnAddModal) btnAddModal.addEventListener('click', function () {
+        if (!modalAtual) return;
+        adicionarItem(modalAtual.id);
+        btnAddModal.textContent = estado.itens.indexOf(modalAtual.id) !== -1 ? 'Adicionado à agenda ✓' : 'Adicionar à agenda';
+      });
+    }
+
+    /* lightbox */
+    lightbox = $('#lightbox');
+    var btnLight = $('#btn-lightbox');
+    if (btnLight) btnLight.addEventListener('click', abrirLightbox);
+    var fecharLight = $('#fechar-lightbox');
+    if (fecharLight) fecharLight.addEventListener('click', fecharLightbox);
+    if (lightbox) lightbox.addEventListener('click', function (e) { if (e.target === lightbox) fecharLightbox(); });
+
+    /* drawer */
+    drawer = $('#agenda-drawer');
+    overlay = $('#overlay');
+    var btnAgendaTopo = $('#btn-agenda-topo');
+    if (btnAgendaTopo) btnAgendaTopo.addEventListener('click', function () { ultimoFoco = btnAgendaTopo; abrirDrawer(); });
+    var btnVerAgenda = $('#btn-ver-agenda');
+    if (btnVerAgenda) btnVerAgenda.addEventListener('click', function () { ultimoFoco = btnVerAgenda; abrirDrawer(); });
+    var fecharAgendaBtn = $('#fechar-agenda');
+    if (fecharAgendaBtn) fecharAgendaBtn.addEventListener('click', fecharDrawer);
+    if (overlay) overlay.addEventListener('click', fecharDrawer);
+
+    /* campos do formulario */
+    var campoNome = $('#campo-nome');
+    var campoData = $('#campo-data');
+    var campoPeriodo = $('#campo-periodo');
+    var campoHora = $('#campo-hora');
+    var campoObs = $('#campo-obs');
+    var erroData = $('#erro-data');
+    var dicaData = $('#dica-data');
+
+    if (campoNome) {
+      campoNome.value = estado.nome;
+      campoNome.addEventListener('input', function () { estado.nome = campoNome.value; salvarAgenda(); });
+    }
+    if (campoObs) {
+      campoObs.value = estado.obs;
+      campoObs.addEventListener('input', function () { estado.obs = campoObs.value; salvarAgenda(); });
+    }
+    if (campoData) {
+      campoData.value = estado.data;
+      campoData.addEventListener('change', function () {
+        var v = campoData.value;
+        if (!v) { estado.data = ''; estado.hora = ''; if (erroData) erroData.textContent = ''; salvarAgenda(); montarHorarios(); return; }
+        var p = v.split('-');
+        var semana = diaSemana(+p[0], +p[1], +p[2]);
+        var hoje = hojeSaoPaulo();
+        var hojeIso = hoje.ano + '-' + (hoje.mes < 10 ? '0' + hoje.mes : hoje.mes) + '-' + (hoje.dia < 10 ? '0' + hoje.dia : hoje.dia);
+        if (v < hojeIso) {
+          estado.data = ''; estado.hora = '';
+          campoData.value = '';
+          if (erroData) erroData.textContent = 'Escolha uma data a partir de hoje.';
+          salvarAgenda(); montarHorarios(); return;
+        }
+        if (semana === 0) {
+          estado.data = ''; estado.hora = '';
+          campoData.value = '';
+          if (erroData) erroData.textContent = 'Não há atendimento aos domingos. Escolha outro dia.';
+          salvarAgenda(); montarHorarios(); return;
+        }
+        if (erroData) erroData.textContent = '';
+        estado.data = v;
+        estado.hora = '';
+        var faixas = periodosDoDia(semana);
+        if (semana === 1) {
+          estado.periodo = 'tarde';
+          if (campoPeriodo) campoPeriodo.value = 'tarde';
+          if (dicaData) dicaData.textContent = 'À segunda-feira o atendimento é somente no período da tarde (14h às 17h).';
+        } else {
+          if (dicaData) dicaData.textContent = 'Atendimento de ' + DIAS[semana] + '. Não há atendimento aos domingos.';
+        }
+        salvarAgenda();
+        montarHorarios();
+      });
+    }
+    if (campoPeriodo) {
+      campoPeriodo.value = estado.periodo;
+      campoPeriodo.addEventListener('change', function () {
+        estado.periodo = campoPeriodo.value;
+        estado.hora = '';
+        salvarAgenda();
+        montarHorarios();
+      });
+    }
+    if (campoHora) {
+      campoHora.addEventListener('change', function () { estado.hora = campoHora.value; salvarAgenda(); });
+    }
+
+    /* enviar pelo whatsapp */
+    var btnEnviar = $('#enviar-whatsapp');
+    if (btnEnviar) {
+      btnEnviar.addEventListener('click', function () {
+        if (!estado.itens.length) {
+          toast('Escolha ao menos um procedimento antes de enviar.');
+          return;
+        }
+        if (campoData && campoData.value && erroData && erroData.textContent) {
+          toast('Confira a data escolhida antes de enviar.');
+          return;
+        }
+        abrirLinkWa(montarMensagem());
+        toast('Solicitação preparada. O WhatsApp vai abrir com a mensagem pronta.');
+      });
+    }
+
+    /* copiar chave pix */
+    $$('[data-copiar-pix], #copiar-pix').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        copiarTexto(PIX_CHAVE);
+        toast('Chave Pix copiada: ' + PIX_CHAVE);
+      });
+    });
+
+    /* balao do whatsapp */
+    var balao = $('#wa-bubble');
+    if (balao) {
+      if (storageLeitura(CHAVE_BALAO) === '1') balao.classList.add('dismissed');
+      var fecharBalao = $('#fechar-balao');
+      if (fecharBalao) fecharBalao.addEventListener('click', function (e) {
+        e.preventDefault();
+        balao.classList.add('dismissed');
+        storageEscrita(CHAVE_BALAO, '1');
+      });
+    }
+
+    /* atalhos de teclado */
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        if (menuAberto) { fecharMenu(); return; }
+        if (modal && modal.classList.contains('open')) { fecharModal(); return; }
+        if (lightbox && lightbox.classList.contains('open')) { fecharLightbox(); return; }
+        if (drawer && drawer.classList.contains('open')) { fecharDrawer(); return; }
+      }
+      if (e.key === 'Tab') {
+        if (menuAberto && menu) { prenderFoco(menu, e); return; }
+        if (modal && modal.classList.contains('open')) { prenderFoco(modal, e); return; }
+        if (lightbox && lightbox.classList.contains('open')) { prenderFoco(lightbox, e); return; }
+        if (drawer && drawer.classList.contains('open')) { prenderFoco(drawer, e); return; }
+      }
+    });
+
+    renderAgenda();
+    montarHorarios();
+    atualizarBotaoAdicionar();
+  }
+
+  function copiarTexto(texto) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(texto).catch(function () { copiarFallback(texto); });
+    } else {
+      copiarFallback(texto);
+    }
+  }
+  function copiarFallback(texto) {
+    var ta = document.createElement('textarea');
+    ta.value = texto;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) { /* ignora */ }
+    document.body.removeChild(ta);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+</body>
+</html>

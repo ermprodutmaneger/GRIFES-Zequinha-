@@ -1,0 +1,590 @@
+<body>
+
+<!-- ============ CARREGAMENTO INICIAL ============ -->
+<div class="loader" id="loader" role="status" aria-label="Carregando o site Ingrid Beauty">
+  <span class="img loader-logo logo-sheen" style="--img:var(--img-logo);width:min(66vw,320px);aspect-ratio:640/282" role="img" aria-label="INGRID BEAUTY"></span>
+  <p class="loader-phrase">Há treze anos, fazendo o simples ficar extraordinário</p>
+  <div class="loader-bar" aria-hidden="true"><span></span></div>
+</div>
+
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="topo">
+  <div class="header-inner">
+    <a class="brand" href="#inicio" aria-label="Ingrid Beauty — início">
+      <span class="img brand-logo" style="--img:var(--img-logo);width:132px;aspect-ratio:640/282" role="img" aria-label="INGRID BEAUTY"></span>
+    </a>
+
+    <nav class="nav-desktop" aria-label="Navegação principal">
+      <a href="#sobre">Sobre</a>
+      <a href="#procedimentos">Procedimentos</a>
+      <a href="#espaco">Espaço</a>
+      <a href="#contato">Contato</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="icon-btn" href="https://www.instagram.com/ingridbeauty.br/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Ingrid Beauty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <button class="icon-btn" id="btn-agenda-topo" aria-label="Abrir minha agenda de procedimentos" aria-controls="agenda-drawer" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><path d="M8.5 13.5l2 2 4-4"/>
+        </svg>
+        <span class="counter" id="contador-topo" hidden>0</span>
+      </button>
+      <a class="btn btn-primary header-wa" href="{{WA_GERAL}}" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24 0 4.54-3.7 8.24-8.24 8.24a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-2.2 4.1c-.17-.4-.34-.41-.5-.42h-.43c-.15 0-.39.06-.59.28-.2.21-.77.75-.77 1.83s.79 2.12.9 2.27c.11.15 1.54 2.35 3.73 3.3.52.22.93.36 1.25.46.52.17 1 .14 1.38.09.42-.06 1.29-.53 1.47-1.04.18-.51.18-.95.13-1.04-.06-.09-.2-.15-.42-.26-.21-.11-1.29-.64-1.49-.71-.2-.07-.34-.11-.48.11-.15.21-.55.71-.68.86-.13.15-.25.17-.47.06-.21-.11-.9-.33-1.72-1.06-.64-.57-1.07-1.27-1.19-1.49-.13-.21-.02-.33.09-.43.1-.1.21-.25.32-.37.1-.13.14-.21.21-.35.06-.15.03-.28-.02-.39-.06-.11-.47-1.14-.65-1.56"/></svg>
+        Agendar pelo WhatsApp
+      </a>
+      <button class="menu-toggle" id="btn-menu" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu de navegação">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MENU MOBILE ============ -->
+<div class="menu-mobile" id="menu-mobile" hidden>
+  <button class="menu-close" id="btn-menu-close" aria-label="Fechar menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <nav aria-label="Navegação mobile">
+    <ul>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#procedimentos">Procedimentos</a></li>
+      <li><a href="#espaco">Espaço</a></li>
+      <li><a href="#contato">Contato</a></li>
+      <li><a href="{{WA_GERAL}}" target="_blank" rel="noopener noreferrer">Agendar pelo WhatsApp</a></li>
+    </ul>
+  </nav>
+  <div class="menu-foot">
+    <a href="tel:+5511916121318">(11) 91612-1318</a>
+    <a href="https://www.instagram.com/ingridbeauty.br/" target="_blank" rel="noopener noreferrer">@ingridbeauty.br</a>
+  </div>
+</div>
+
+<main id="conteudo">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="inicio">
+    <div class="hero-inner wrap">
+      <div class="hero-copy">
+        <div class="logo-sheen" data-reveal style="--d:60ms">
+          <span class="img hero-logo" style="--img:var(--img-logo);width:min(78vw,330px);aspect-ratio:640/282" role="img" aria-label="INGRID BEAUTY"></span>
+        </div>
+        <p class="hero-eyebrow" data-reveal style="--d:140ms">SOBRANCELHAS · CÍLIOS · CUIDADOS FACIAIS</p>
+        <h1 class="hero-title" data-reveal style="--d:220ms">
+          Realce seu olhar.<br>Valorize sua<br><em>beleza natural.</em>
+        </h1>
+        <p class="hero-text" data-reveal style="--d:300ms">
+          Há treze anos, fazendo o simples ficar extraordinário. Conheça os cuidados da Ingrid Beauty para suas sobrancelhas, cílios e pele e solicite seu agendamento pelo WhatsApp.
+        </p>
+        <div class="hero-cta" data-reveal style="--d:380ms">
+          <a class="btn btn-ghost" href="#procedimentos">Ver procedimentos</a>
+          <a class="btn btn-primary" href="{{WA_GERAL}}" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24 0 4.54-3.7 8.24-8.24 8.24a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-2.2 4.1c-.17-.4-.34-.41-.5-.42h-.43c-.15 0-.39.06-.59.28-.2.21-.77.75-.77 1.83s.79 2.12.9 2.27c.11.15 1.54 2.35 3.73 3.3.52.22.93.36 1.25.46.52.17 1 .14 1.38.09.42-.06 1.29-.53 1.47-1.04.18-.51.18-.95.13-1.04-.06-.09-.2-.15-.42-.26-.21-.11-1.29-.64-1.49-.71-.2-.07-.34-.11-.48.11-.15.21-.55.71-.68.86-.13.15-.25.17-.47.06-.21-.11-.9-.33-1.72-1.06-.64-.57-1.07-1.27-1.19-1.49-.13-.21-.02-.33.09-.43.1-.1.21-.25.32-.37.1-.13.14-.21.21-.35.06-.15.03-.28-.02-.39-.06-.11-.47-1.14-.65-1.56"/></svg>
+            Agendar pelo WhatsApp
+          </a>
+        </div>
+        <ul class="tags" data-reveal style="--d:460ms">
+          <li class="tag">Agendamentos pelo WhatsApp</li>
+          <li class="tag">13 anos de atuação</li>
+          <li class="tag">Recuperação de fios naturais</li>
+        </ul>
+      </div>
+
+      <div class="hero-media" data-reveal style="--d:240ms">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <figure class="hero-photo" id="hero-foto">
+          <span class="img cover hero-foto-img" style="--img:var(--img-hero);aspect-ratio:700/924" role="img" aria-label="Ingrid Ferreira no espaço Ingrid Beauty, sorrindo com uma taça na mão"></span>
+        </figure>
+        <div class="seal" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <defs><path id="circulo-seal" d="M60,60 m-43,0 a43,43 0 1,1 86,0 a43,43 0 1,1 -86,0"/></defs>
+            <text><textPath href="#circulo-seal" startOffset="0">Ingrid Beauty · Beleza natural · Ingrid Beauty · Beleza natural · </textPath></text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Brow Lamination</span><span>Design de Sobrancelhas</span><span>Henna</span><span>Glow Facial</span><span>Micropigmentação Shadow</span><span>Depilação com Linha</span>
+      <span>Brow Lamination</span><span>Design de Sobrancelhas</span><span>Henna</span><span>Glow Facial</span><span>Micropigmentação Shadow</span><span>Depilação com Linha</span>
+    </div>
+  </div>
+  <p class="sr-only">Procedimentos em destaque: Brow Lamination, Design de Sobrancelhas, Henna, Glow Facial, Micropigmentação Shadow e Depilação com Linha.</p>
+
+  <!-- ============ SOBRE ============ -->
+  <section class="section" id="sobre">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Quem cuida de você</p>
+        <h2 class="section-title">“Oi, eu sou a Ingrid.”</h2>
+        <span class="rule"></span>
+      </div>
+
+      <div class="sobre-grid">
+        <figure class="sobre-foto" data-reveal>
+          <span class="img cover sobre-foto-img" style="--img:var(--img-hero-big);aspect-ratio:1000/1320" role="img" aria-label="Ingrid Ferreira, profissional da Ingrid Beauty"></span>
+        </figure>
+
+        <div class="sobre-texto" data-reveal style="--d:120ms">
+          <p>
+            Sou Ingrid Ferreira, da Ingrid Beauty. <span class="hl">Há treze anos, fazendo o simples ficar extraordinário.</span>
+            Meu trabalho reúne cuidados com sobrancelhas, cílios e pele, com destaque para a
+            <span class="hl">recuperação de fios naturais</span>. Também atuo com remoção a laser e
+            <span class="hl">cuidados pós-operatórios</span>. Aqui você conhece os procedimentos e pode conversar comigo pelo WhatsApp para escolher seu atendimento.
+          </p>
+
+          <ul class="destaques">
+            <li class="destaque" data-reveal style="--d:80ms">
+              <span class="destaque-num">13</span>
+              <h3>13 anos de atuação</h3>
+              <p>Há treze anos fazendo o simples ficar extraordinário.</p>
+            </li>
+            <li class="destaque" data-reveal style="--d:160ms">
+              <span class="destaque-num">✧</span>
+              <h3>Recuperação de fios naturais</h3>
+              <p>Especialidade em recuperar e trabalhar os fios naturais das sobrancelhas.</p>
+            </li>
+            <li class="destaque" data-reveal style="--d:240ms">
+              <span class="destaque-num">⌾</span>
+              <h3>Atendimento mediante agendamento</h3>
+              <p>Escolha os procedimentos e combine a data pelo WhatsApp.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCEDIMENTOS ============ -->
+  <section class="section" id="procedimentos" style="background:linear-gradient(180deg,rgba(233,220,201,.45),rgba(247,242,232,0) 65%)">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Catálogo</p>
+        <h2 class="section-title">Procedimentos &amp; valores</h2>
+        <p class="section-lead">Duração e valores de cada atendimento. Escolha os procedimentos que deseja e envie sua solicitação pelo WhatsApp — a confirmação de horário é feita pela Ingrid.</p>
+        <span class="rule"></span>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filtrar procedimentos por categoria" data-reveal>
+        <button class="filter" type="button" data-filter="todos" aria-pressed="true">Todos</button>
+        <button class="filter" type="button" data-filter="sobrancelhas" aria-pressed="false">Sobrancelhas</button>
+        <button class="filter" type="button" data-filter="cilios" aria-pressed="false">Cílios</button>
+        <button class="filter" type="button" data-filter="pele" aria-pressed="false">Pele e depilação</button>
+        <button class="filter" type="button" data-filter="avaliacao" aria-pressed="false">Avaliação</button>
+      </div>
+
+      <div class="grid-proc" id="lista-procedimentos">
+        {{CARDS}}
+      </div>
+
+      <div class="especialidades" data-reveal>
+        <h3>Conheça também minhas especialidades</h3>
+        <p>Atendimentos que também faço e que precisam ser consultados diretamente com a Ingrid.</p>
+        <div class="esp-grid">
+          <article class="esp-card">
+            <span class="esp-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20c3-8 6-13 8-14 2 1 5 6 8 14"/><path d="M8.5 15.5c1.6-1.2 5.4-1.2 7 0"/></svg>
+            </span>
+            <h4>Recuperação de fios naturais</h4>
+            <p>Especialidade em recuperação dos fios naturais das sobrancelhas. Valores, duração e disponibilidade são combinados com a Ingrid.</p>
+            <a class="btn btn-ghost btn-sm" href="{{WA_ESP_FIOS}}" target="_blank" rel="noopener noreferrer">Consultar pelo WhatsApp</a>
+          </article>
+          <article class="esp-card">
+            <span class="esp-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H12z"/></svg>
+            </span>
+            <h4>Remoção a laser</h4>
+            <p>Remoção a laser disponível mediante consulta. O escopo do procedimento, o valor e a duração são informados pela Ingrid.</p>
+            <a class="btn btn-ghost btn-sm" href="{{WA_ESP_LASER}}" target="_blank" rel="noopener noreferrer">Consultar pelo WhatsApp</a>
+          </article>
+          <article class="esp-card">
+            <span class="esp-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-7.5-4.4-7.5-9.6A4.4 4.4 0 0 1 12 8.5a4.4 4.4 0 0 1 7.5 2.9C19.5 16.6 12 21 12 21Z"/></svg>
+            </span>
+            <h4>Cuidados pós-operatórios</h4>
+            <p>Acompanhamento de cuidados pós-operatórios, com orientações e disponibilidade avaliados caso a caso com a Ingrid.</p>
+            <a class="btn btn-ghost btn-sm" href="{{WA_ESP_POSOP}}" target="_blank" rel="noopener noreferrer">Consultar pelo WhatsApp</a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ESPAÇO ============ -->
+  <section class="section" id="espaco">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">O espaço</p>
+        <h2 class="section-title">Conheça o espaço<br><em>Ingrid Beauty</em></h2>
+        <span class="rule"></span>
+      </div>
+
+      <div class="espaco-grid">
+        <figure class="espaco-fig" data-reveal>
+          <button type="button" id="btn-lightbox" class="espaco-btn" aria-label="Ampliar a foto do espaço Ingrid Beauty">
+            <span class="img cover espaco-foto" style="--img:var(--img-espaco);aspect-ratio:820/1090" role="img" aria-label="Ingrid Ferreira no espaço Ingrid Beauty, com a marca e o letreiro luminoso ao fundo"></span>
+          </button>
+          <figcaption class="espaco-cap">Um detalhe do espaço Ingrid Beauty.</figcaption>
+        </figure>
+
+        <div data-reveal style="--d:120ms">
+          <p class="section-lead" style="margin-top:0">
+            O espaço Ingrid Beauty foi pensado para receber cada atendimento com calma, luz quente e
+            atenção individual. As sobrancelhas, os cílios e os cuidados faciais são realizados em um
+            ambiente preparado para o seu momento de cuidado.
+          </p>
+          <p class="section-lead">
+            Clique na foto para ampliar. Para o endereço e os horários exatos do seu atendimento, fale com a
+            Ingrid pelo WhatsApp.
+          </p>
+          <a class="btn btn-primary" style="margin-top:1.4rem" href="{{WA_GERAL}}" target="_blank" rel="noopener noreferrer">Falar com a Ingrid</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMO AGENDAR ============ -->
+  <section class="section" id="agendar" style="background:linear-gradient(180deg,rgba(233,220,201,.5),rgba(247,242,232,0))">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Como agendar</p>
+        <h2 class="section-title">Simples, rápido e sem cadastro</h2>
+        <span class="rule"></span>
+      </div>
+
+      <div class="agenda-grid">
+        <div>
+        <div class="passos">
+        <div class="passo" data-reveal>
+          <span class="passo-num" aria-hidden="true"></span>
+          <div>
+            <h3>Escolha os procedimentos</h3>
+            <p>Adicione à sua agenda os procedimentos que deseja realizar, com valores e durações informados.</p>
+          </div>
+        </div>
+        <div class="passo" data-reveal style="--d:90ms">
+          <span class="passo-num" aria-hidden="true"></span>
+          <div>
+            <h3>Informe o dia e o período de preferência</h3>
+            <p>Escolha a data, o período (manhã ou tarde) e o horário que prefere, dentro dos dias de atendimento.</p>
+          </div>
+        </div>
+        <div class="passo" data-reveal style="--d:180ms">
+          <span class="passo-num" aria-hidden="true"></span>
+          <div>
+            <h3>Envie a solicitação pelo WhatsApp</h3>
+            <p>A mensagem é montada com os procedimentos, a data e o total estimado. Aguarde a confirmação da Ingrid.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="aviso" data-reveal>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.2v.1"/></svg>
+        <p><strong>O atendimento será confirmado pela Ingrid após verificar a disponibilidade.</strong> Os horários abaixo são horários de funcionamento do espaço, e não uma lista de vagas livres.</p>
+      </div>
+        </div>
+
+        <figure class="agenda-arte" data-reveal style="--d:160ms">
+          <span class="img" style="--img:var(--img-svc-agendar);background-size:cover" role="img" aria-label="Detalhe dos materiais de atendimento da Ingrid Beauty"></span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Dúvidas</p>
+        <h2 class="section-title">Perguntas frequentes</h2>
+        <span class="rule"></span>
+      </div>
+
+      <div class="faq-list" data-reveal>
+        <details class="faq-item">
+          <summary>Como faço para agendar?</summary>
+          <div class="faq-answer">Escolha os procedimentos, informe suas preferências e envie a solicitação pelo WhatsApp. A Ingrid confirmará a disponibilidade.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Não sei qual procedimento escolher. Posso fazer uma avaliação?</summary>
+          <div class="faq-answer">Sim. A avaliação tem duração informada de 15 minutos. Consulte o valor e a disponibilidade pelo WhatsApp.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Quanto tempo dura o atendimento?</summary>
+          <div class="faq-answer">A duração está indicada em cada procedimento. Ao escolher mais de um serviço, confirme com a Ingrid o tempo necessário para o atendimento completo.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Posso ir auxiliada? Quais cuidados preciso ter?</summary>
+          <div class="faq-answer">Peça à Ingrid as orientações de preparação e cuidados específicas para o procedimento escolhido.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Quais são as formas de pagamento?</summary>
+          <div class="faq-answer">Consulte as formas de pagamento diretamente pelo WhatsApp antes do atendimento.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Onde fica o espaço?</summary>
+          <div class="faq-answer">Solicite o endereço e a localização pelo WhatsApp.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTATO ============ -->
+  <section class="section" id="contato" style="background:linear-gradient(180deg,rgba(233,220,201,.45),rgba(247,242,232,0) 70%)">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Contato</p>
+        <h2 class="section-title">Vamos conversar</h2>
+        <span class="rule"></span>
+      </div>
+
+      <div class="contato-grid">
+        <article class="contato-card" data-reveal>
+          <h3>WhatsApp</h3>
+          <a class="contato-link" href="{{WA_GERAL}}" target="_blank" rel="noopener noreferrer">(11) 91612-1318</a>
+          <p class="contato-nota">Agendamentos, valores e dúvidas sobre os procedimentos.</p>
+        </article>
+
+        <article class="contato-card" data-reveal style="--d:80ms">
+          <h3>Instagram</h3>
+          <a class="contato-link" href="https://www.instagram.com/ingridbeauty.br/" target="_blank" rel="noopener noreferrer">@ingridbeauty.br</a>
+          <p class="contato-nota">Novidades, trabalhos e dia a dia no estúdio.</p>
+        </article>
+
+        <article class="contato-card" data-reveal style="--d:160ms">
+          <h3>Horários de atendimento</h3>
+          <table class="horarios">
+            <caption class="sr-only">Horários de funcionamento do espaço Ingrid Beauty</caption>
+            <tbody>
+              <tr><th scope="row">Segunda-feira</th><td>14h às 17h</td></tr>
+              <tr><th scope="row">Terça-feira</th><td>9h às 11h30 e 13h30 às 17h30</td></tr>
+              <tr><th scope="row">Quarta-feira</th><td>9h30 às 11h30 e 13h30 às 17h</td></tr>
+              <tr><th scope="row">Quinta-feira</th><td>9h30 às 11h30, 13h30 às 14h30 e 16h30 às 17h30</td></tr>
+              <tr><th scope="row">Sexta-feira</th><td>9h às 11h30 e 13h30 às 17h30</td></tr>
+              <tr><th scope="row">Sábado</th><td>8h30 às 16h</td></tr>
+              <tr data-fechado="1"><th scope="row">Domingo</th><td>Fechado</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="contato-card" data-reveal style="--d:240ms">
+          <h3>Localização</h3>
+          <p class="contato-nota" style="font-weight:500">O endereço e a localização do espaço são enviados por mensagem, para você chegar com facilidade.</p>
+          <a class="btn btn-ghost btn-sm" style="margin-top:.5rem;align-self:flex-start" href="{{WA_LOC}}" target="_blank" rel="noopener noreferrer">Solicitar localização</a>
+        </article>
+      </div>
+
+      <div class="contato-cta" data-reveal>
+        <span class="img contato-cta-logo" style="--img:var(--img-logo-frase);width:150px;aspect-ratio:640/367" role="img" aria-label="INGRID BEAUTY — Há treze anos, fazendo o simples ficar extraordinário"></span>
+        <div>
+          <h3>Converse com a Ingrid</h3>
+          <p>Tire suas dúvidas, conheça os procedimentos e combine o seu próximo atendimento.</p>
+        </div>
+        <a class="btn btn-gold" href="{{WA_GERAL}}" target="_blank" rel="noopener noreferrer">Falar pelo WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ============ -->
+  <section class="cta-final">
+    <div class="wrap">
+      <h2 data-reveal>Seu olhar merece<br><em>esse cuidado.</em></h2>
+      <p data-reveal style="--d:100ms">Escolha seu procedimento e converse com a Ingrid para combinar seu atendimento.</p>
+      <a class="btn btn-primary" href="{{WA_GERAL}}" target="_blank" rel="noopener noreferrer" data-reveal style="--d:180ms">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24 0 4.54-3.7 8.24-8.24 8.24a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-2.2 4.1c-.17-.4-.34-.41-.5-.42h-.43c-.15 0-.39.06-.59.28-.2.21-.77.75-.77 1.83s.79 2.12.9 2.27c.11.15 1.54 2.35 3.73 3.3.52.22.93.36 1.25.46.52.17 1 .14 1.38.09.42-.06 1.29-.53 1.47-1.04.18-.51.18-.95.13-1.04-.06-.09-.2-.15-.42-.26-.21-.11-1.29-.64-1.49-.71-.2-.07-.34-.11-.48.11-.15.21-.55.71-.68.86-.13.15-.25.17-.47.06-.21-.11-.9-.33-1.72-1.06-.64-.57-1.07-1.27-1.19-1.49-.13-.21-.02-.33.09-.43.1-.1.21-.25.32-.37.1-.13.14-.21.21-.35.06-.15.03-.28-.02-.39-.06-.11-.47-1.14-.65-1.56"/></svg>
+        Agendar pelo WhatsApp
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ RODAPÉ ============ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="img footer-logo" style="--img:var(--img-logo);width:min(62vw,235px);aspect-ratio:640/282" role="img" aria-label="INGRID BEAUTY"></span>
+        <p>Há treze anos, fazendo o simples ficar extraordinário</p>
+      </div>
+      <nav class="footer-col" aria-label="Navegação do rodapé">
+        <h3>Navegação</h3>
+        <ul>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#procedimentos">Procedimentos</a></li>
+          <li><a href="#espaco">Espaço</a></li>
+          <li><a href="#faq">Perguntas frequentes</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h3>Contato</h3>
+        <ul>
+          <li><a href="{{WA_GERAL}}" target="_blank" rel="noopener noreferrer">WhatsApp (11) 91612-1318</a></li>
+          <li><a href="https://www.instagram.com/ingridbeauty.br/" target="_blank" rel="noopener noreferrer">Instagram @ingridbeauty.br</a></li>
+          <li><a href="https://maapp.com.br/ingridbeauty" target="_blank" rel="noopener noreferrer">Agenda online</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="ano-atual">2026</span> Ingrid Beauty · Todos os direitos reservados.</p>
+      <p>Feito com cuidado por Ingrid Ferreira</p>
+    </div>
+  </div>
+  <span class="footer-outline" aria-hidden="true">INGRID BEAUTY</span>
+</footer>
+
+<!-- ============ WHATSAPP FLUTUANTE ============ -->
+<div class="wa-float" id="wa-float">
+  <div class="wa-bubble" id="wa-bubble" role="status">
+    Oi! Quer ajuda para escolher seu procedimento? ✨
+    <button type="button" id="fechar-balao" aria-label="Fechar a mensagem de ajuda">×</button>
+  </div>
+  <a class="wa-avatar" href="{{WA_GERAL}}" target="_blank" rel="noopener noreferrer" aria-label="Conversar com a Ingrid pelo WhatsApp">
+    <span class="img cover" style="--img:var(--img-hero);background-position:center 16%" role="img" aria-label="Ingrid Ferreira"></span>
+  </a>
+</div>
+
+<!-- ============ BARRA MOBILE ============ -->
+<div class="barra-mobile" id="barra-mobile" aria-live="polite">
+  <div class="barra-info">
+    <strong id="barra-contagem">0 procedimentos</strong>
+    <span id="barra-total">R$ 0,00</span>
+  </div>
+  <button class="btn btn-primary" type="button" id="btn-ver-agenda">Ver minha agenda</button>
+</div>
+
+<!-- ============ DRAWER DA AGENDA ============ -->
+<div class="overlay" id="overlay" hidden></div>
+<aside class="drawer" id="agenda-drawer" role="dialog" aria-modal="true" aria-labelledby="titulo-agenda" hidden>
+  <div class="drawer-head">
+    <div>
+      <h2 id="titulo-agenda">Minha agenda</h2>
+      <p id="subtitulo-agenda">Escolha os procedimentos e envie sua solicitação.</p>
+    </div>
+    <button class="drawer-close" id="fechar-agenda" aria-label="Fechar minha agenda">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+
+  <div class="drawer-body">
+    <div id="lista-agenda"></div>
+
+    <div class="total-box" id="caixa-total" hidden>
+      <div class="row"><span>Total estimado</span></div>
+      <span class="total" id="total-valor">R$ 0,00</span>
+      <span class="avaliacao" id="total-avaliacao" hidden>+ avaliação com valor a confirmar</span>
+    </div>
+
+    <form id="form-agenda" novalidate>
+      <div class="field">
+        <label for="campo-nome">Nome da cliente</label>
+        <input type="text" id="campo-nome" name="nome" autocomplete="name" placeholder="Como podemos te chamar?">
+      </div>
+
+      <div class="field">
+        <label for="campo-data">Dia preferido</label>
+        <input type="date" id="campo-data" name="data">
+        <span class="field-hint" id="dica-data">Não há atendimento aos domingos. À segunda-feira, apenas no período da tarde.</span>
+        <span class="field-error" id="erro-data" role="alert"></span>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="campo-periodo">Período preferido</label>
+          <select id="campo-periodo" name="periodo">
+            <option value="">A combinar</option>
+            <option value="manhã">Manhã</option>
+            <option value="tarde">Tarde</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="campo-hora">Horário de preferência</label>
+          <select id="campo-hora" name="hora" disabled>
+            <option value="">Escolha o dia primeiro</option>
+          </select>
+        </div>
+      </div>
+      <span class="field-hint" id="dica-horario">O horário é uma preferência e está sujeito à confirmação da Ingrid.</span>
+
+      <div class="field">
+        <label for="campo-obs">Observação (opcional)</label>
+        <textarea id="campo-obs" name="observacao" placeholder="Quer contar alguma coisa para a Ingrid?"></textarea>
+      </div>
+
+      <div class="pix-box">
+        <h4>Pagamento via Pix</h4>
+        <p class="pix-texto">O pagamento é feito após a confirmação do agendamento pela Ingrid. Faça o Pix para a chave abaixo e envie o comprovante pelo WhatsApp.</p>
+        <div class="pix-key">
+          <code id="pix-chave">11916121318</code>
+          <button class="btn btn-ghost btn-sm" type="button" id="copiar-pix">Copiar chave</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="drawer-foot">
+    <button class="btn btn-primary btn-block" type="button" id="enviar-whatsapp">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24 0 4.54-3.7 8.24-8.24 8.24a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-2.2 4.1c-.17-.4-.34-.41-.5-.42h-.43c-.15 0-.39.06-.59.28-.2.21-.77.75-.77 1.83s.79 2.12.9 2.27c.11.15 1.54 2.35 3.73 3.3.52.22.93.36 1.25.46.52.17 1 .14 1.38.09.42-.06 1.29-.53 1.47-1.04.18-.51.18-.95.13-1.04-.06-.09-.2-.15-.42-.26-.21-.11-1.29-.64-1.49-.71-.2-.07-.34-.11-.48.11-.15.21-.55.71-.68.86-.13.15-.25.17-.47.06-.21-.11-.9-.33-1.72-1.06-.64-.57-1.07-1.27-1.19-1.49-.13-.21-.02-.33.09-.43.1-.1.21-.25.32-.37.1-.13.14-.21.21-.35.06-.15.03-.28-.02-.39-.06-.11-.47-1.14-.65-1.56"/></svg>
+      Enviar solicitação pelo WhatsApp
+    </button>
+  </div>
+</aside>
+
+<!-- ============ MODAL DE PROCEDIMENTO ============ -->
+<div class="modal" id="modal-procedimento" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" hidden>
+  <div class="modal-box">
+    <button class="modal-close" id="fechar-modal" aria-label="Fechar detalhes do procedimento">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="modal-media"><span class="img cover" id="modal-img" role="img" aria-label=""></span></div>
+    <div class="modal-body">
+      <p class="modal-cat" id="modal-cat"></p>
+      <h3 id="modal-titulo"></h3>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-meta">
+        <div><dt>Duração do atendimento</dt><dd id="modal-duracao"></dd></div>
+        <div><dt>Valor</dt><dd id="modal-preco"></dd></div>
+      </div>
+      <p class="modal-note">A duração informada é a do atendimento. A confirmação de horário é feita pela Ingrid pelo WhatsApp.</p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="button" id="modal-agendar">Agendar este procedimento</button>
+        <button class="btn btn-ghost" type="button" id="modal-adicionar">Adicionar à agenda</button>
+      </div>
+      <div class="pix-box">
+        <h4>Pagamento via Pix</h4>
+        <p class="pix-texto">Após a confirmação do agendamento, faça o Pix para a chave abaixo e envie o comprovante pelo WhatsApp.</p>
+        <div class="pix-key">
+          <code>11916121318</code>
+          <button class="btn btn-ghost btn-sm" type="button" data-copiar-pix>Copiar chave</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada do espaço Ingrid Beauty" hidden>
+  <button class="modal-close" id="fechar-lightbox" aria-label="Fechar a foto ampliada" style="top:1rem;right:1rem;position:fixed">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <figure>
+    <span class="img cover lightbox-img" style="--img:var(--img-espaco);height:min(76vh,880px);aspect-ratio:820/1090" role="img" aria-label="Ingrid Ferreira no espaço Ingrid Beauty"></span>
+    <figcaption>Um detalhe do espaço Ingrid Beauty.</figcaption>
+  </figure>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toast-texto"></span>
+</div>

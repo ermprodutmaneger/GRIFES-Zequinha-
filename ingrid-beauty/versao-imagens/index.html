@@ -2111,7 +2111,28 @@ section{position:relative}
   }
 
   /* ---------------- inicializacao ---------------- */
+  function ajustarUrlPublica() {
+    /* deixa og:url / og:image / canonical apontando para o dominio real do deploy */
+    try {
+      var origem = window.location.origin;
+      if (!/^https?:$/.test('')) {
+        var metas = [
+          ['meta[property="og:url"]', origem + '/'],
+          ['meta[property="og:image"]', origem + '/og.jpg'],
+          ['meta[name="twitter:image"]', origem + '/og.jpg']
+        ];
+        metas.forEach(function (par) {
+          var el = document.querySelector(par[0]);
+          if (el) el.setAttribute('content', par[1]);
+        });
+        var canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.setAttribute('href', origem + '/');
+      }
+    } catch (e) { /* sem permissao: mantem as metas originais */ }
+  }
+
   function iniciar() {
+    ajustarUrlPublica();
     iniciarLoader();
     iniciarRevelacoes();
     iniciarDestaques();

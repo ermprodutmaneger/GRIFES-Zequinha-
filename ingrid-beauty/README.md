@@ -1,5 +1,17 @@
 # Ingrid Beauty — site institucional + agenda (WhatsApp)
 
+## 🚀 Publicar no Netlify em 1 minuto (ZIP pronto)
+
+1. Baixe **`ingrid-beauty-netlify.zip`** (nesta pasta).
+2. No Netlify: **Add new site → Deploy manually** e arraste o arquivo `.zip` (ou descompacte e arraste a pasta).
+3. Pronto: o site já sobe com `index.html` na raiz, tudo embutido (imagens + fontes). Não precisa de pasta `img/`.
+4. Quando tiver o domínio: **Site configuration → Domain management** → adicione o domínio e, no `index.html`, troque
+   `https://ingrid-beauty.vercel.app` pelo domínio final (são 4 ocorrências: `og:url`, `og:image`, `twitter:image` e `canonical`).
+   O próprio site já ajusta essas metas para o domínio atual quando o navegador executa o JavaScript — mas o ideal é
+   salvar o `index.html` com o domínio definitivo para o link de compartilhamento (WhatsApp/Facebook) sair correto.
+
+---
+
 Site único, estático, em português do Brasil, para a **Ingrid Beauty** (Ingrid Ferreira).
 Identidade visual premium (marrom profundo, creme, dourado), tipografia Cormorant Garamond + Manrope,
 carregamento inicial animado, catálogo com 9 procedimentos, agenda de procedimentos com total em centavos,
